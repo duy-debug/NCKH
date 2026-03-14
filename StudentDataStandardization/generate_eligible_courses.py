@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import argparse
 import csv
@@ -16,6 +16,7 @@ XSD_NS = "http://www.w3.org/2001/XMLSchema#"
 @dataclass
 class StudentProfile:
     student_id: str
+    student_name: str
     enrollment_year: int
     specialization_code: str
     specialization_name: str
@@ -28,11 +29,11 @@ class StudentProfile:
 
     @property
     def completed_courses(self) -> set[str]:
-        return {course for course, status in self.statuses.items() if status == "dat"}
+        return {course for course, status in self.statuses.items() if status == "Đạt"}
 
     @property
     def failed_courses(self) -> set[str]:
-        return {course for course, status in self.statuses.items() if status == "chua_dat"}
+        return {course for course, status in self.statuses.items() if status == "Chưa đạt"}
 
 
 @dataclass
@@ -81,10 +82,10 @@ def safe_float(value: Any) -> float | None:
 
 def normalize_status(value: str) -> str:
     value = (value or "").strip().lower()
-    if value in {"dat", "pass", "passed"}:
-        return "dat"
-    if value in {"chua_dat", "chuadat", "fail", "failed"}:
-        return "chua_dat"
+    if value in {"dat", "đạt", "pass", "passed"}:
+        return "Đạt"
+    if value in {"chua_dat", "chưa đạt", "chuadat", "fail", "failed", "chưa_đạt"}:
+        return "Chưa đạt"
     raise ValueError(f"Trang thai mon hoc khong hop le: {value}")
 
 
@@ -110,6 +111,7 @@ def load_students(input_path: Path) -> list[StudentProfile]:
                 records.append(
                     {
                         "mssv": row["mssv"],
+                        "ten_sinh_vien": row.get("ten_sinh_vien", "Chưa cập nhật"),
                         "nam_vao_hoc": safe_int(row["nam_vao_hoc"]),
                         "chuyen_nganh_chon": {
                             "ma": row["chuyen_nganh_chon_ma"],
@@ -136,6 +138,7 @@ def load_students(input_path: Path) -> list[StudentProfile]:
         }
         student = StudentProfile(
             student_id=record["mssv"],
+            student_name=record.get("ten_sinh_vien", "Chưa cập nhật"),
             enrollment_year=int(record["nam_vao_hoc"]),
             specialization_code=specialization.get("ma", ""),
             specialization_name=specialization.get("ten", ""),
@@ -344,6 +347,7 @@ def evaluate_student(student: StudentProfile, ontology: OntologyData) -> dict[st
 
     return {
         "student_id": student.student_id,
+        "student_name": student.student_name,
         "specialization_code": student.specialization_code,
         "specialization_name": student.specialization_name,
         "major_code": major_code,

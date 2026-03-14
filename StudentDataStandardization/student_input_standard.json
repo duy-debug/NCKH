@@ -1,4 +1,4 @@
-﻿{
+{
   "dataset_name": "student_input_standard_v1",
   "ontology_alignment": {
     "student_id": "StudentID",
@@ -12,25 +12,25 @@
     "specialization_codes": [
       {
         "code": "CNPM",
-        "label": "Cong nghe phan mem"
+        "label": "Công nghệ phần mềm"
       },
       {
         "code": "HTTT",
-        "label": "He thong thong tin"
+        "label": "Hệ thống thông tin"
       },
       {
         "code": "TTMMT",
-        "label": "Truyen thong va Mang may tinh"
+        "label": "Truyền thông và mạng máy tính"
       }
     ],
     "learning_goals": [
-      "dung_han",
-      "hoc_vuot",
-      "giam_tai"
+      "Đúng hạn",
+      "Học vượt",
+      "Giảm tải"
     ],
     "course_status": [
-      "dat",
-      "chua_dat"
+      "Đạt",
+      "Chưa đạt"
     ],
     "semester_range": {
       "min": 1,
@@ -40,6 +40,7 @@
   },
   "required_fields": [
     "mssv",
+    "ten_sinh_vien",
     "nam_vao_hoc",
     "chuyen_nganh_chon",
     "danh_sach_mon_da_hoc",
@@ -52,15 +53,15 @@
   "field_spec": {
     "mssv": {
       "type": "string",
-      "description": "Ma sinh vien duy nhat, anh xa voi StudentID."
+      "description": "Mã sinh viên duy nhất, ánh xạ với StudentID."
     },
     "nam_vao_hoc": {
       "type": "integer",
-      "description": "Nam bat dau hoc, anh xa voi enrollmentYear."
+      "description": "Năm bắt đầu học, ánh xạ với enrollmentYear."
     },
     "chuyen_nganh_chon": {
       "type": "object",
-      "description": "Chuyen nganh sinh vien da chon.",
+      "description": "Chuyên ngành sinh viên đã chọn.",
       "properties": {
         "ma": "string",
         "ten": "string"
@@ -68,180 +69,833 @@
     },
     "danh_sach_mon_da_hoc": {
       "type": "array[string]",
-      "description": "Danh sach ma mon da tung hoc, gom ca mon dat va chua dat."
+      "description": "Danh sách mã môn đã từng học, gồm cả môn đạt và chưa đạt."
     },
     "diem_tung_mon": {
       "type": "object",
-      "description": "Map ma mon -> diem he 10."
+      "description": "Map mã môn -> điểm hệ 10."
     },
     "trang_thai_dat_chua_dat": {
       "type": "object",
-      "description": "Map ma mon -> dat/chua_dat."
+      "description": "Map mã môn -> Đạt/Chưa đạt."
     },
     "so_tin_chi_da_tich_luy": {
       "type": "integer",
-      "description": "Tong so tin chi chi tinh cho cac mon dat."
+      "description": "Tổng số tín chỉ chỉ tính cho các môn đạt."
     },
     "hoc_ky_hien_tai": {
       "type": "integer",
-      "description": "Hoc ky hien tai theo ontology Semester1..Semester8."
+      "description": "Học kỳ hiện tại theo ontology Semester1..Semester8."
     },
     "muc_tieu_hoc_tap": {
       "type": "string",
-      "description": "Muc tieu hoc tap hien tai: dung_han, hoc_vuot, giam_tai."
+      "description": "Mục tiêu học tập hiện tại: Đúng hạn, Học vượt, Giảm tải."
+    },
+    "ten_sinh_vien": {
+      "type": "string",
+      "description": "Họ và tên sinh viên."
     }
   },
   "validation_rules": [
     "Tat ca ma mon trong diem_tung_mon phai ton tai trong danh_sach_mon_da_hoc.",
     "Tat ca ma mon trong trang_thai_dat_chua_dat phai ton tai trong danh_sach_mon_da_hoc.",
-    "Neu trang_thai_dat_chua_dat[ma_mon] = 'dat' thi ma_mon co the anh xa sang hasCompletedCourse.",
-    "Neu trang_thai_dat_chua_dat[ma_mon] = 'chua_dat' thi ma_mon co the anh xa sang hasFailedCourse.",
-    "so_tin_chi_da_tich_luy nen bang tong so tin chi cua cac mon co trang thai 'dat'.",
+    "Neu trang_thai_dat_chua_dat[ma_mon] = 'Đạt' thi ma_mon co the anh xa sang hasCompletedCourse.",
+    "Neu trang_thai_dat_chua_dat[ma_mon] = 'Chưa đạt' thi ma_mon co the anh xa sang hasFailedCourse.",
+    "so_tin_chi_da_tich_luy nen bang tong so tin chi cua cac mon co trang thai 'Đạt'.",
     "hoc_ky_hien_tai nen la so nguyen tu 1 den 8."
   ],
   "records": [
     {
       "mssv": "SV0001",
+      "ten_sinh_vien": "Nguyễn Văn Anh",
       "nam_vao_hoc": 2023,
-      "chuyen_nganh_chon": { "ma": "CNPM", "ten": "Cong nghe phan mem" },
-      "danh_sach_mon_da_hoc": ["INS326", "POL307", "POL308", "POL309", "POL310", "SOT301", "SOT315", "SOT320", "INS330", "MAT327", "SOT332"],
-      "diem_tung_mon": { "INS326": 7.8, "POL307": 8.0, "POL308": 7.4, "POL309": 7.0, "POL310": 8.1, "SOT301": 7.2, "SOT315": 8.4, "SOT320": 6.8, "INS330": 4.2, "MAT327": 3.9, "SOT332": 4.7 },
-      "trang_thai_dat_chua_dat": { "INS326": "dat", "POL307": "dat", "POL308": "dat", "POL309": "dat", "POL310": "dat", "SOT301": "dat", "SOT315": "dat", "SOT320": "dat", "INS330": "chua_dat", "MAT327": "chua_dat", "SOT332": "chua_dat" },
+      "chuyen_nganh_chon": {
+        "ma": "CNPM",
+        "ten": "Công nghệ phần mềm"
+      },
+      "danh_sach_mon_da_hoc": [
+        "INS326",
+        "POL307",
+        "POL308",
+        "POL309",
+        "POL310",
+        "SOT301",
+        "SOT315",
+        "SOT320",
+        "INS330",
+        "MAT327",
+        "SOT332"
+      ],
+      "diem_tung_mon": {
+        "INS326": 7.8,
+        "POL307": 8.0,
+        "POL308": 7.4,
+        "POL309": 7.0,
+        "POL310": 8.1,
+        "SOT301": 7.2,
+        "SOT315": 8.4,
+        "SOT320": 6.8,
+        "INS330": 4.2,
+        "MAT327": 3.9,
+        "SOT332": 4.7
+      },
+      "trang_thai_dat_chua_dat": {
+        "INS326": "Đạt",
+        "POL307": "Đạt",
+        "POL308": "Đạt",
+        "POL309": "Đạt",
+        "POL310": "Đạt",
+        "SOT301": "Đạt",
+        "SOT315": "Đạt",
+        "SOT320": "Đạt",
+        "INS330": "Chưa đạt",
+        "MAT327": "Chưa đạt",
+        "SOT332": "Chưa đạt"
+      },
       "so_tin_chi_da_tich_luy": 21,
       "hoc_ky_hien_tai": 2,
-      "muc_tieu_hoc_tap": "giam_tai"
+      "muc_tieu_hoc_tap": "Giảm tải"
     },
     {
       "mssv": "SV0002",
+      "ten_sinh_vien": "Trần Thị Bình",
       "nam_vao_hoc": 2021,
-      "chuyen_nganh_chon": { "ma": "CNPM", "ten": "Cong nghe phan mem" },
-      "danh_sach_mon_da_hoc": ["INS326", "INS330", "MAT322", "MAT327", "MAT328", "NEC321", "NEC329", "PHY310", "POL307", "POL308", "POL309", "POL310", "POL333", "SOT301", "SOT315", "SOT320", "SOT331", "SOT332", "SOT347", "SOT355", "SOT375", "SOT380", "SOT381", "SSH313", "SSH378", "SSH379", "85065"],
-      "diem_tung_mon": { "INS326": 7.5, "INS330": 8.1, "MAT322": 6.9, "MAT327": 7.0, "MAT328": 6.8, "NEC321": 7.3, "NEC329": 7.0, "PHY310": 6.5, "POL307": 8.2, "POL308": 7.8, "POL309": 7.4, "POL310": 8.0, "POL333": 7.1, "SOT301": 7.6, "SOT315": 8.0, "SOT320": 7.2, "SOT331": 6.8, "SOT332": 7.0, "SOT347": 8.3, "SOT355": 8.4, "SOT375": 7.7, "SOT380": 8.1, "SOT381": 7.5, "SSH313": 8.6, "SSH378": 8.0, "SSH379": 7.9, "85065": 8.5 },
-      "trang_thai_dat_chua_dat": { "INS326": "dat", "INS330": "dat", "MAT322": "dat", "MAT327": "dat", "MAT328": "dat", "NEC321": "dat", "NEC329": "dat", "PHY310": "dat", "POL307": "dat", "POL308": "dat", "POL309": "dat", "POL310": "dat", "POL333": "dat", "SOT301": "dat", "SOT315": "dat", "SOT320": "dat", "SOT331": "dat", "SOT332": "dat", "SOT347": "dat", "SOT355": "dat", "SOT375": "dat", "SOT380": "dat", "SOT381": "dat", "SSH313": "dat", "SSH378": "dat", "SSH379": "dat", "85065": "dat" },
+      "chuyen_nganh_chon": {
+        "ma": "CNPM",
+        "ten": "Công nghệ phần mềm"
+      },
+      "danh_sach_mon_da_hoc": [
+        "INS326",
+        "INS330",
+        "MAT322",
+        "MAT327",
+        "MAT328",
+        "NEC321",
+        "NEC329",
+        "PHY310",
+        "POL307",
+        "POL308",
+        "POL309",
+        "POL310",
+        "POL333",
+        "SOT301",
+        "SOT315",
+        "SOT320",
+        "SOT331",
+        "SOT332",
+        "SOT347",
+        "SOT355",
+        "SOT375",
+        "SOT380",
+        "SOT381",
+        "SSH313",
+        "SSH378",
+        "SSH379",
+        "85065"
+      ],
+      "diem_tung_mon": {
+        "INS326": 7.5,
+        "INS330": 8.1,
+        "MAT322": 6.9,
+        "MAT327": 7.0,
+        "MAT328": 6.8,
+        "NEC321": 7.3,
+        "NEC329": 7.0,
+        "PHY310": 6.5,
+        "POL307": 8.2,
+        "POL308": 7.8,
+        "POL309": 7.4,
+        "POL310": 8.0,
+        "POL333": 7.1,
+        "SOT301": 7.6,
+        "SOT315": 8.0,
+        "SOT320": 7.2,
+        "SOT331": 6.8,
+        "SOT332": 7.0,
+        "SOT347": 8.3,
+        "SOT355": 8.4,
+        "SOT375": 7.7,
+        "SOT380": 8.1,
+        "SOT381": 7.5,
+        "SSH313": 8.6,
+        "SSH378": 8.0,
+        "SSH379": 7.9,
+        "85065": 8.5
+      },
+      "trang_thai_dat_chua_dat": {
+        "INS326": "Đạt",
+        "INS330": "Đạt",
+        "MAT322": "Đạt",
+        "MAT327": "Đạt",
+        "MAT328": "Đạt",
+        "NEC321": "Đạt",
+        "NEC329": "Đạt",
+        "PHY310": "Đạt",
+        "POL307": "Đạt",
+        "POL308": "Đạt",
+        "POL309": "Đạt",
+        "POL310": "Đạt",
+        "POL333": "Đạt",
+        "SOT301": "Đạt",
+        "SOT315": "Đạt",
+        "SOT320": "Đạt",
+        "SOT331": "Đạt",
+        "SOT332": "Đạt",
+        "SOT347": "Đạt",
+        "SOT355": "Đạt",
+        "SOT375": "Đạt",
+        "SOT380": "Đạt",
+        "SOT381": "Đạt",
+        "SSH313": "Đạt",
+        "SSH378": "Đạt",
+        "SSH379": "Đạt",
+        "85065": "Đạt"
+      },
       "so_tin_chi_da_tich_luy": 81,
       "hoc_ky_hien_tai": 6,
-      "muc_tieu_hoc_tap": "dung_han"
+      "muc_tieu_hoc_tap": "Đúng hạn"
     },
     {
       "mssv": "SV0005",
+      "ten_sinh_vien": "Lê Văn Cường",
       "nam_vao_hoc": 2024,
-      "chuyen_nganh_chon": { "ma": "HTTT", "ten": "He thong thong tin" },
-      "danh_sach_mon_da_hoc": ["INS325", "INS326", "INS330", "INS339", "MAT322", "MAT327", "MAT328", "NEC321", "PHY310", "PHY311", "POL310", "SOT301", "SOT315", "SOT320", "SOT331", "SOT336", "SOT347", "SOT375", "SOT381"],
-      "diem_tung_mon": { "INS325": 7.1, "INS326": 7.4, "INS330": 8.0, "INS339": 7.8, "MAT322": 6.7, "MAT327": 6.9, "MAT328": 6.5, "NEC321": 7.0, "PHY310": 6.4, "PHY311": 6.8, "POL310": 8.2, "SOT301": 7.5, "SOT315": 7.9, "SOT320": 6.8, "SOT331": 6.7, "SOT336": 7.6, "SOT347": 8.1, "SOT375": 7.4, "SOT381": 7.8 },
-      "trang_thai_dat_chua_dat": { "INS325": "dat", "INS326": "dat", "INS330": "dat", "INS339": "dat", "MAT322": "dat", "MAT327": "dat", "MAT328": "dat", "NEC321": "dat", "PHY310": "dat", "PHY311": "dat", "POL310": "dat", "SOT301": "dat", "SOT315": "dat", "SOT320": "dat", "SOT331": "dat", "SOT336": "dat", "SOT347": "dat", "SOT375": "dat", "SOT381": "dat" },
+      "chuyen_nganh_chon": {
+        "ma": "HTTT",
+        "ten": "Hệ thống thông tin"
+      },
+      "danh_sach_mon_da_hoc": [
+        "INS325",
+        "INS326",
+        "INS330",
+        "INS339",
+        "MAT322",
+        "MAT327",
+        "MAT328",
+        "NEC321",
+        "PHY310",
+        "PHY311",
+        "POL310",
+        "SOT301",
+        "SOT315",
+        "SOT320",
+        "SOT331",
+        "SOT336",
+        "SOT347",
+        "SOT375",
+        "SOT381"
+      ],
+      "diem_tung_mon": {
+        "INS325": 7.1,
+        "INS326": 7.4,
+        "INS330": 8.0,
+        "INS339": 7.8,
+        "MAT322": 6.7,
+        "MAT327": 6.9,
+        "MAT328": 6.5,
+        "NEC321": 7.0,
+        "PHY310": 6.4,
+        "PHY311": 6.8,
+        "POL310": 8.2,
+        "SOT301": 7.5,
+        "SOT315": 7.9,
+        "SOT320": 6.8,
+        "SOT331": 6.7,
+        "SOT336": 7.6,
+        "SOT347": 8.1,
+        "SOT375": 7.4,
+        "SOT381": 7.8
+      },
+      "trang_thai_dat_chua_dat": {
+        "INS325": "Đạt",
+        "INS326": "Đạt",
+        "INS330": "Đạt",
+        "INS339": "Đạt",
+        "MAT322": "Đạt",
+        "MAT327": "Đạt",
+        "MAT328": "Đạt",
+        "NEC321": "Đạt",
+        "PHY310": "Đạt",
+        "PHY311": "Đạt",
+        "POL310": "Đạt",
+        "SOT301": "Đạt",
+        "SOT315": "Đạt",
+        "SOT320": "Đạt",
+        "SOT331": "Đạt",
+        "SOT336": "Đạt",
+        "SOT347": "Đạt",
+        "SOT375": "Đạt",
+        "SOT381": "Đạt"
+      },
       "so_tin_chi_da_tich_luy": 57,
       "hoc_ky_hien_tai": 4,
-      "muc_tieu_hoc_tap": "hoc_vuot"
+      "muc_tieu_hoc_tap": "Học vượt"
     },
     {
       "mssv": "SV0006",
+      "ten_sinh_vien": "Phạm Thị Dung",
       "nam_vao_hoc": 2022,
-      "chuyen_nganh_chon": { "ma": "TTMMT", "ten": "Truyen thong va Mang may tinh" },
-      "danh_sach_mon_da_hoc": ["MAT322", "MAT327", "MAT328", "PHY310", "PHY311", "NEC321", "NEC326", "NEC329", "INS325", "INS326", "SOT301", "SOT315", "SOT320", "POL310", "SOT331"],
-      "diem_tung_mon": { "MAT322": 7.0, "MAT327": 6.8, "MAT328": 6.5, "PHY310": 6.9, "PHY311": 7.1, "NEC321": 7.5, "NEC326": 7.8, "NEC329": 7.0, "INS325": 7.2, "INS326": 7.4, "SOT301": 7.6, "SOT315": 7.3, "SOT320": 6.9, "POL310": 8.0, "SOT331": 7.1 },
-      "trang_thai_dat_chua_dat": { "MAT322": "dat", "MAT327": "dat", "MAT328": "dat", "PHY310": "dat", "PHY311": "dat", "NEC321": "dat", "NEC326": "dat", "NEC329": "dat", "INS325": "dat", "INS326": "dat", "SOT301": "dat", "SOT315": "dat", "SOT320": "dat", "POL310": "dat", "SOT331": "dat" },
+      "chuyen_nganh_chon": {
+        "ma": "TTMMT",
+        "ten": "Truyền thông và mạng máy tính"
+      },
+      "danh_sach_mon_da_hoc": [
+        "MAT322",
+        "MAT327",
+        "MAT328",
+        "PHY310",
+        "PHY311",
+        "NEC321",
+        "NEC326",
+        "NEC329",
+        "INS325",
+        "INS326",
+        "SOT301",
+        "SOT315",
+        "SOT320",
+        "POL310",
+        "SOT331"
+      ],
+      "diem_tung_mon": {
+        "MAT322": 7.0,
+        "MAT327": 6.8,
+        "MAT328": 6.5,
+        "PHY310": 6.9,
+        "PHY311": 7.1,
+        "NEC321": 7.5,
+        "NEC326": 7.8,
+        "NEC329": 7.0,
+        "INS325": 7.2,
+        "INS326": 7.4,
+        "SOT301": 7.6,
+        "SOT315": 7.3,
+        "SOT320": 6.9,
+        "POL310": 8.0,
+        "SOT331": 7.1
+      },
+      "trang_thai_dat_chua_dat": {
+        "MAT322": "Đạt",
+        "MAT327": "Đạt",
+        "MAT328": "Đạt",
+        "PHY310": "Đạt",
+        "PHY311": "Đạt",
+        "NEC321": "Đạt",
+        "NEC326": "Đạt",
+        "NEC329": "Đạt",
+        "INS325": "Đạt",
+        "INS326": "Đạt",
+        "SOT301": "Đạt",
+        "SOT315": "Đạt",
+        "SOT320": "Đạt",
+        "POL310": "Đạt",
+        "SOT331": "Đạt"
+      },
       "so_tin_chi_da_tich_luy": 45,
       "hoc_ky_hien_tai": 5,
-      "muc_tieu_hoc_tap": "dung_han"
+      "muc_tieu_hoc_tap": "Đúng hạn"
     },
     {
       "mssv": "SV0007",
+      "ten_sinh_vien": "Hoàng Văn Em",
       "nam_vao_hoc": 2025,
-      "chuyen_nganh_chon": { "ma": "CNPM", "ten": "Cong nghe phan mem" },
-      "danh_sach_mon_da_hoc": ["SOT381", "SSH313", "FLS314", "POL307", "85065"],
-      "diem_tung_mon": { "SOT381": 7.9, "SSH313": 8.1, "FLS314": 7.5, "POL307": 6.8, "85065": 8.7 },
-      "trang_thai_dat_chua_dat": { "SOT381": "dat", "SSH313": "dat", "FLS314": "dat", "POL307": "dat", "85065": "dat" },
+      "chuyen_nganh_chon": {
+        "ma": "CNPM",
+        "ten": "Công nghệ phần mềm"
+      },
+      "danh_sach_mon_da_hoc": [
+        "SOT381",
+        "SSH313",
+        "FLS314",
+        "POL307",
+        "85065"
+      ],
+      "diem_tung_mon": {
+        "SOT381": 7.9,
+        "SSH313": 8.1,
+        "FLS314": 7.5,
+        "POL307": 6.8,
+        "85065": 8.7
+      },
+      "trang_thai_dat_chua_dat": {
+        "SOT381": "Đạt",
+        "SSH313": "Đạt",
+        "FLS314": "Đạt",
+        "POL307": "Đạt",
+        "85065": "Đạt"
+      },
       "so_tin_chi_da_tich_luy": 12,
       "hoc_ky_hien_tai": 1,
-      "muc_tieu_hoc_tap": "hoc_vuot"
+      "muc_tieu_hoc_tap": "Học vượt"
     },
     {
       "mssv": "SV0008",
+      "ten_sinh_vien": "Võ Thị Phượng",
       "nam_vao_hoc": 2023,
-      "chuyen_nganh_chon": { "ma": "HTTT", "ten": "He thong thong tin" },
-      "danh_sach_mon_da_hoc": ["SOT381", "SSH313", "FLS314", "POL307", "MAT322", "SOT301", "SSH378", "FLS315", "INS325", "INS326", "INS330"],
-      "diem_tung_mon": { "SOT381": 7.2, "SSH313": 8.0, "FLS314": 7.1, "POL307": 6.6, "MAT322": 5.9, "SOT301": 7.4, "SSH378": 7.8, "FLS315": 7.0, "INS325": 6.9, "INS326": 7.3, "INS330": 4.8 },
-      "trang_thai_dat_chua_dat": { "SOT381": "dat", "SSH313": "dat", "FLS314": "dat", "POL307": "dat", "MAT322": "dat", "SOT301": "dat", "SSH378": "dat", "FLS315": "dat", "INS325": "dat", "INS326": "dat", "INS330": "chua_dat" },
+      "chuyen_nganh_chon": {
+        "ma": "HTTT",
+        "ten": "Hệ thống thông tin"
+      },
+      "danh_sach_mon_da_hoc": [
+        "SOT381",
+        "SSH313",
+        "FLS314",
+        "POL307",
+        "MAT322",
+        "SOT301",
+        "SSH378",
+        "FLS315",
+        "INS325",
+        "INS326",
+        "INS330"
+      ],
+      "diem_tung_mon": {
+        "SOT381": 7.2,
+        "SSH313": 8.0,
+        "FLS314": 7.1,
+        "POL307": 6.6,
+        "MAT322": 5.9,
+        "SOT301": 7.4,
+        "SSH378": 7.8,
+        "FLS315": 7.0,
+        "INS325": 6.9,
+        "INS326": 7.3,
+        "INS330": 4.8
+      },
+      "trang_thai_dat_chua_dat": {
+        "SOT381": "Đạt",
+        "SSH313": "Đạt",
+        "FLS314": "Đạt",
+        "POL307": "Đạt",
+        "MAT322": "Đạt",
+        "SOT301": "Đạt",
+        "SSH378": "Đạt",
+        "FLS315": "Đạt",
+        "INS325": "Đạt",
+        "INS326": "Đạt",
+        "INS330": "Chưa đạt"
+      },
       "so_tin_chi_da_tich_luy": 28,
       "hoc_ky_hien_tai": 3,
-      "muc_tieu_hoc_tap": "dung_han"
+      "muc_tieu_hoc_tap": "Đúng hạn"
     },
     {
       "mssv": "SV0009",
+      "ten_sinh_vien": "Đặng Văn Trường",
       "nam_vao_hoc": 2022,
-      "chuyen_nganh_chon": { "ma": "CNPM", "ten": "Cong nghe phan mem" },
-      "danh_sach_mon_da_hoc": ["SOT381", "SSH313", "FLS314", "POL307", "MAT322", "SOT301", "SSH378", "FLS315", "INS325", "INS326", "INS330", "POL308", "POL309", "POL310", "SOT315", "SOT320"],
-      "diem_tung_mon": { "SOT381": 7.0, "SSH313": 8.3, "FLS314": 7.2, "POL307": 6.5, "MAT322": 6.0, "SOT301": 7.1, "SSH378": 7.7, "FLS315": 7.3, "INS325": 6.8, "INS326": 7.0, "INS330": 5.1, "POL308": 7.0, "POL309": 6.9, "POL310": 7.8, "SOT315": 7.4, "SOT320": 4.3 },
-      "trang_thai_dat_chua_dat": { "SOT381": "dat", "SSH313": "dat", "FLS314": "dat", "POL307": "dat", "MAT322": "dat", "SOT301": "dat", "SSH378": "dat", "FLS315": "dat", "INS325": "dat", "INS326": "dat", "INS330": "dat", "POL308": "dat", "POL309": "dat", "POL310": "dat", "SOT315": "dat", "SOT320": "chua_dat" },
+      "chuyen_nganh_chon": {
+        "ma": "CNPM",
+        "ten": "Công nghệ phần mềm"
+      },
+      "danh_sach_mon_da_hoc": [
+        "SOT381",
+        "SSH313",
+        "FLS314",
+        "POL307",
+        "MAT322",
+        "SOT301",
+        "SSH378",
+        "FLS315",
+        "INS325",
+        "INS326",
+        "INS330",
+        "POL308",
+        "POL309",
+        "POL310",
+        "SOT315",
+        "SOT320"
+      ],
+      "diem_tung_mon": {
+        "SOT381": 7.0,
+        "SSH313": 8.3,
+        "FLS314": 7.2,
+        "POL307": 6.5,
+        "MAT322": 6.0,
+        "SOT301": 7.1,
+        "SSH378": 7.7,
+        "FLS315": 7.3,
+        "INS325": 6.8,
+        "INS326": 7.0,
+        "INS330": 5.1,
+        "POL308": 7.0,
+        "POL309": 6.9,
+        "POL310": 7.8,
+        "SOT315": 7.4,
+        "SOT320": 4.3
+      },
+      "trang_thai_dat_chua_dat": {
+        "SOT381": "Đạt",
+        "SSH313": "Đạt",
+        "FLS314": "Đạt",
+        "POL307": "Đạt",
+        "MAT322": "Đạt",
+        "SOT301": "Đạt",
+        "SSH378": "Đạt",
+        "FLS315": "Đạt",
+        "INS325": "Đạt",
+        "INS326": "Đạt",
+        "INS330": "Đạt",
+        "POL308": "Đạt",
+        "POL309": "Đạt",
+        "POL310": "Đạt",
+        "SOT315": "Đạt",
+        "SOT320": "Chưa đạt"
+      },
       "so_tin_chi_da_tich_luy": 42,
       "hoc_ky_hien_tai": 5,
-      "muc_tieu_hoc_tap": "giam_tai"
+      "muc_tieu_hoc_tap": "Giảm tải"
     },
     {
       "mssv": "SV0010",
+      "ten_sinh_vien": "Bùi Thị Quyên",
       "nam_vao_hoc": 2024,
-      "chuyen_nganh_chon": { "ma": "TTMMT", "ten": "Truyen thong va Mang may tinh" },
-      "danh_sach_mon_da_hoc": ["SOT381", "SSH313", "FLS314", "POL307", "MAT322", "SOT301", "SSH378", "FLS315", "MAT327", "MAT328", "PHY310", "NEC321", "NEC329"],
-      "diem_tung_mon": { "SOT381": 7.6, "SSH313": 8.0, "FLS314": 7.4, "POL307": 6.7, "MAT322": 6.3, "SOT301": 7.5, "SSH378": 7.6, "FLS315": 7.2, "MAT327": 6.1, "MAT328": 6.0, "PHY310": 6.8, "NEC321": 7.1, "NEC329": 7.0 },
-      "trang_thai_dat_chua_dat": { "SOT381": "dat", "SSH313": "dat", "FLS314": "dat", "POL307": "dat", "MAT322": "dat", "SOT301": "dat", "SSH378": "dat", "FLS315": "dat", "MAT327": "dat", "MAT328": "dat", "PHY310": "dat", "NEC321": "dat", "NEC329": "dat" },
+      "chuyen_nganh_chon": {
+        "ma": "TTMMT",
+        "ten": "Truyền thông và mạng máy tính"
+      },
+      "danh_sach_mon_da_hoc": [
+        "SOT381",
+        "SSH313",
+        "FLS314",
+        "POL307",
+        "MAT322",
+        "SOT301",
+        "SSH378",
+        "FLS315",
+        "MAT327",
+        "MAT328",
+        "PHY310",
+        "NEC321",
+        "NEC329"
+      ],
+      "diem_tung_mon": {
+        "SOT381": 7.6,
+        "SSH313": 8.0,
+        "FLS314": 7.4,
+        "POL307": 6.7,
+        "MAT322": 6.3,
+        "SOT301": 7.5,
+        "SSH378": 7.6,
+        "FLS315": 7.2,
+        "MAT327": 6.1,
+        "MAT328": 6.0,
+        "PHY310": 6.8,
+        "NEC321": 7.1,
+        "NEC329": 7.0
+      },
+      "trang_thai_dat_chua_dat": {
+        "SOT381": "Đạt",
+        "SSH313": "Đạt",
+        "FLS314": "Đạt",
+        "POL307": "Đạt",
+        "MAT322": "Đạt",
+        "SOT301": "Đạt",
+        "SSH378": "Đạt",
+        "FLS315": "Đạt",
+        "MAT327": "Đạt",
+        "MAT328": "Đạt",
+        "PHY310": "Đạt",
+        "NEC321": "Đạt",
+        "NEC329": "Đạt"
+      },
       "so_tin_chi_da_tich_luy": 33,
       "hoc_ky_hien_tai": 4,
-      "muc_tieu_hoc_tap": "hoc_vuot"
+      "muc_tieu_hoc_tap": "Học vượt"
     },
     {
       "mssv": "SV0011",
+      "ten_sinh_vien": "Đỗ Văn Trí",
       "nam_vao_hoc": 2021,
-      "chuyen_nganh_chon": { "ma": "HTTT", "ten": "He thong thong tin" },
-      "danh_sach_mon_da_hoc": ["SOT381", "SSH313", "FLS314", "POL307", "MAT322", "SOT301", "SSH378", "FLS315", "INS325", "INS326", "INS330", "MAT327", "MAT328", "NEC321", "NEC329", "PHY310", "PHY311", "POL308", "POL309", "POL310", "SOT315", "SOT320", "SOT331", "INS339"],
-      "diem_tung_mon": { "SOT381": 7.8, "SSH313": 8.2, "FLS314": 7.4, "POL307": 6.9, "MAT322": 6.6, "SOT301": 7.5, "SSH378": 7.9, "FLS315": 7.6, "INS325": 7.3, "INS326": 7.7, "INS330": 8.1, "MAT327": 6.8, "MAT328": 6.7, "NEC321": 7.2, "NEC329": 7.1, "PHY310": 6.9, "PHY311": 7.0, "POL308": 7.1, "POL309": 7.0, "POL310": 8.0, "SOT315": 7.6, "SOT320": 7.1, "SOT331": 7.0, "INS339": 7.9 },
-      "trang_thai_dat_chua_dat": { "SOT381": "dat", "SSH313": "dat", "FLS314": "dat", "POL307": "dat", "MAT322": "dat", "SOT301": "dat", "SSH378": "dat", "FLS315": "dat", "INS325": "dat", "INS326": "dat", "INS330": "dat", "MAT327": "dat", "MAT328": "dat", "NEC321": "dat", "NEC329": "dat", "PHY310": "dat", "PHY311": "dat", "POL308": "dat", "POL309": "dat", "POL310": "dat", "SOT315": "dat", "SOT320": "dat", "SOT331": "dat", "INS339": "dat" },
+      "chuyen_nganh_chon": {
+        "ma": "HTTT",
+        "ten": "Hệ thống thông tin"
+      },
+      "danh_sach_mon_da_hoc": [
+        "SOT381",
+        "SSH313",
+        "FLS314",
+        "POL307",
+        "MAT322",
+        "SOT301",
+        "SSH378",
+        "FLS315",
+        "INS325",
+        "INS326",
+        "INS330",
+        "MAT327",
+        "MAT328",
+        "NEC321",
+        "NEC329",
+        "PHY310",
+        "PHY311",
+        "POL308",
+        "POL309",
+        "POL310",
+        "SOT315",
+        "SOT320",
+        "SOT331",
+        "INS339"
+      ],
+      "diem_tung_mon": {
+        "SOT381": 7.8,
+        "SSH313": 8.2,
+        "FLS314": 7.4,
+        "POL307": 6.9,
+        "MAT322": 6.6,
+        "SOT301": 7.5,
+        "SSH378": 7.9,
+        "FLS315": 7.6,
+        "INS325": 7.3,
+        "INS326": 7.7,
+        "INS330": 8.1,
+        "MAT327": 6.8,
+        "MAT328": 6.7,
+        "NEC321": 7.2,
+        "NEC329": 7.1,
+        "PHY310": 6.9,
+        "PHY311": 7.0,
+        "POL308": 7.1,
+        "POL309": 7.0,
+        "POL310": 8.0,
+        "SOT315": 7.6,
+        "SOT320": 7.1,
+        "SOT331": 7.0,
+        "INS339": 7.9
+      },
+      "trang_thai_dat_chua_dat": {
+        "SOT381": "Đạt",
+        "SSH313": "Đạt",
+        "FLS314": "Đạt",
+        "POL307": "Đạt",
+        "MAT322": "Đạt",
+        "SOT301": "Đạt",
+        "SSH378": "Đạt",
+        "FLS315": "Đạt",
+        "INS325": "Đạt",
+        "INS326": "Đạt",
+        "INS330": "Đạt",
+        "MAT327": "Đạt",
+        "MAT328": "Đạt",
+        "NEC321": "Đạt",
+        "NEC329": "Đạt",
+        "PHY310": "Đạt",
+        "PHY311": "Đạt",
+        "POL308": "Đạt",
+        "POL309": "Đạt",
+        "POL310": "Đạt",
+        "SOT315": "Đạt",
+        "SOT320": "Đạt",
+        "SOT331": "Đạt",
+        "INS339": "Đạt"
+      },
       "so_tin_chi_da_tich_luy": 72,
       "hoc_ky_hien_tai": 7,
-      "muc_tieu_hoc_tap": "dung_han"
+      "muc_tieu_hoc_tap": "Đúng hạn"
     },
     {
       "mssv": "SV0012",
+      "ten_sinh_vien": "Hồ Thị Linh",
       "nam_vao_hoc": 2023,
-      "chuyen_nganh_chon": { "ma": "CNPM", "ten": "Cong nghe phan mem" },
-      "danh_sach_mon_da_hoc": ["SOT381", "SSH313", "FLS314", "POL307", "MAT322", "SOT301", "SSH378", "FLS315", "INS325", "INS326", "INS330", "SOT315", "SOT320", "SOT331"],
-      "diem_tung_mon": { "SOT381": 7.4, "SSH313": 8.1, "FLS314": 7.3, "POL307": 6.7, "MAT322": 6.1, "SOT301": 7.2, "SSH378": 7.7, "FLS315": 7.2, "INS325": 7.0, "INS326": 7.5, "INS330": 7.8, "SOT315": 7.6, "SOT320": 6.9, "SOT331": 6.8 },
-      "trang_thai_dat_chua_dat": { "SOT381": "dat", "SSH313": "dat", "FLS314": "dat", "POL307": "dat", "MAT322": "dat", "SOT301": "dat", "SSH378": "dat", "FLS315": "dat", "INS325": "dat", "INS326": "dat", "INS330": "dat", "SOT315": "dat", "SOT320": "dat", "SOT331": "dat" },
+      "chuyen_nganh_chon": {
+        "ma": "CNPM",
+        "ten": "Công nghệ phần mềm"
+      },
+      "danh_sach_mon_da_hoc": [
+        "SOT381",
+        "SSH313",
+        "FLS314",
+        "POL307",
+        "MAT322",
+        "SOT301",
+        "SSH378",
+        "FLS315",
+        "INS325",
+        "INS326",
+        "INS330",
+        "SOT315",
+        "SOT320",
+        "SOT331"
+      ],
+      "diem_tung_mon": {
+        "SOT381": 7.4,
+        "SSH313": 8.1,
+        "FLS314": 7.3,
+        "POL307": 6.7,
+        "MAT322": 6.1,
+        "SOT301": 7.2,
+        "SSH378": 7.7,
+        "FLS315": 7.2,
+        "INS325": 7.0,
+        "INS326": 7.5,
+        "INS330": 7.8,
+        "SOT315": 7.6,
+        "SOT320": 6.9,
+        "SOT331": 6.8
+      },
+      "trang_thai_dat_chua_dat": {
+        "SOT381": "Đạt",
+        "SSH313": "Đạt",
+        "FLS314": "Đạt",
+        "POL307": "Đạt",
+        "MAT322": "Đạt",
+        "SOT301": "Đạt",
+        "SSH378": "Đạt",
+        "FLS315": "Đạt",
+        "INS325": "Đạt",
+        "INS326": "Đạt",
+        "INS330": "Đạt",
+        "SOT315": "Đạt",
+        "SOT320": "Đạt",
+        "SOT331": "Đạt"
+      },
       "so_tin_chi_da_tich_luy": 36,
       "hoc_ky_hien_tai": 4,
-      "muc_tieu_hoc_tap": "hoc_vuot"
+      "muc_tieu_hoc_tap": "Học vượt"
     },
     {
       "mssv": "SV0013",
+      "ten_sinh_vien": "Ngô Văn Bảo",
       "nam_vao_hoc": 2024,
-      "chuyen_nganh_chon": { "ma": "TTMMT", "ten": "Truyen thong va Mang may tinh" },
-      "danh_sach_mon_da_hoc": ["SOT381", "SSH313", "FLS314", "POL307", "MAT322", "SOT301", "SSH378", "FLS315"],
-      "diem_tung_mon": { "SOT381": 7.1, "SSH313": 7.8, "FLS314": 6.9, "POL307": 6.2, "MAT322": 5.8, "SOT301": 7.0, "SSH378": 7.4, "FLS315": 4.6 },
-      "trang_thai_dat_chua_dat": { "SOT381": "dat", "SSH313": "dat", "FLS314": "dat", "POL307": "dat", "MAT322": "dat", "SOT301": "dat", "SSH378": "dat", "FLS315": "chua_dat" },
+      "chuyen_nganh_chon": {
+        "ma": "TTMMT",
+        "ten": "Truyền thông và mạng máy tính"
+      },
+      "danh_sach_mon_da_hoc": [
+        "SOT381",
+        "SSH313",
+        "FLS314",
+        "POL307",
+        "MAT322",
+        "SOT301",
+        "SSH378",
+        "FLS315"
+      ],
+      "diem_tung_mon": {
+        "SOT381": 7.1,
+        "SSH313": 7.8,
+        "FLS314": 6.9,
+        "POL307": 6.2,
+        "MAT322": 5.8,
+        "SOT301": 7.0,
+        "SSH378": 7.4,
+        "FLS315": 4.6
+      },
+      "trang_thai_dat_chua_dat": {
+        "SOT381": "Đạt",
+        "SSH313": "Đạt",
+        "FLS314": "Đạt",
+        "POL307": "Đạt",
+        "MAT322": "Đạt",
+        "SOT301": "Đạt",
+        "SSH378": "Đạt",
+        "FLS315": "Chưa đạt"
+      },
       "so_tin_chi_da_tich_luy": 18,
       "hoc_ky_hien_tai": 2,
-      "muc_tieu_hoc_tap": "giam_tai"
+      "muc_tieu_hoc_tap": "Giảm tải"
     },
     {
       "mssv": "SV0014",
+      "ten_sinh_vien": "Dương Thị Hoài",
       "nam_vao_hoc": 2022,
-      "chuyen_nganh_chon": { "ma": "HTTT", "ten": "He thong thong tin" },
-      "danh_sach_mon_da_hoc": ["SOT381", "SSH313", "FLS314", "POL307", "MAT322", "SOT301", "SSH378", "FLS315", "INS325", "INS326", "INS330", "MAT327", "MAT328", "NEC321", "NEC329", "PHY310", "PHY311", "POL308", "POL309"],
-      "diem_tung_mon": { "SOT381": 7.7, "SSH313": 8.0, "FLS314": 7.3, "POL307": 6.8, "MAT322": 6.4, "SOT301": 7.3, "SSH378": 7.8, "FLS315": 7.1, "INS325": 7.0, "INS326": 7.4, "INS330": 7.9, "MAT327": 6.7, "MAT328": 6.5, "NEC321": 7.2, "NEC329": 7.0, "PHY310": 6.8, "PHY311": 7.0, "POL308": 7.0, "POL309": 6.9 },
-      "trang_thai_dat_chua_dat": { "SOT381": "dat", "SSH313": "dat", "FLS314": "dat", "POL307": "dat", "MAT322": "dat", "SOT301": "dat", "SSH378": "dat", "FLS315": "dat", "INS325": "dat", "INS326": "dat", "INS330": "dat", "MAT327": "dat", "MAT328": "dat", "NEC321": "dat", "NEC329": "dat", "PHY310": "dat", "PHY311": "dat", "POL308": "dat", "POL309": "dat" },
+      "chuyen_nganh_chon": {
+        "ma": "HTTT",
+        "ten": "Hệ thống thông tin"
+      },
+      "danh_sach_mon_da_hoc": [
+        "SOT381",
+        "SSH313",
+        "FLS314",
+        "POL307",
+        "MAT322",
+        "SOT301",
+        "SSH378",
+        "FLS315",
+        "INS325",
+        "INS326",
+        "INS330",
+        "MAT327",
+        "MAT328",
+        "NEC321",
+        "NEC329",
+        "PHY310",
+        "PHY311",
+        "POL308",
+        "POL309"
+      ],
+      "diem_tung_mon": {
+        "SOT381": 7.7,
+        "SSH313": 8.0,
+        "FLS314": 7.3,
+        "POL307": 6.8,
+        "MAT322": 6.4,
+        "SOT301": 7.3,
+        "SSH378": 7.8,
+        "FLS315": 7.1,
+        "INS325": 7.0,
+        "INS326": 7.4,
+        "INS330": 7.9,
+        "MAT327": 6.7,
+        "MAT328": 6.5,
+        "NEC321": 7.2,
+        "NEC329": 7.0,
+        "PHY310": 6.8,
+        "PHY311": 7.0,
+        "POL308": 7.0,
+        "POL309": 6.9
+      },
+      "trang_thai_dat_chua_dat": {
+        "SOT381": "Đạt",
+        "SSH313": "Đạt",
+        "FLS314": "Đạt",
+        "POL307": "Đạt",
+        "MAT322": "Đạt",
+        "SOT301": "Đạt",
+        "SSH378": "Đạt",
+        "FLS315": "Đạt",
+        "INS325": "Đạt",
+        "INS326": "Đạt",
+        "INS330": "Đạt",
+        "MAT327": "Đạt",
+        "MAT328": "Đạt",
+        "NEC321": "Đạt",
+        "NEC329": "Đạt",
+        "PHY310": "Đạt",
+        "PHY311": "Đạt",
+        "POL308": "Đạt",
+        "POL309": "Đạt"
+      },
       "so_tin_chi_da_tich_luy": 54,
       "hoc_ky_hien_tai": 6,
-      "muc_tieu_hoc_tap": "dung_han"
+      "muc_tieu_hoc_tap": "Đúng hạn"
     },
     {
       "mssv": "SV0015",
+      "ten_sinh_vien": "Lý Văn Hoàng",
       "nam_vao_hoc": 2025,
-      "chuyen_nganh_chon": { "ma": "CNPM", "ten": "Cong nghe phan mem" },
-      "danh_sach_mon_da_hoc": ["SOT381", "SSH313", "FLS314", "POL307"],
-      "diem_tung_mon": { "SOT381": 7.5, "SSH313": 7.9, "FLS314": 7.1, "POL307": 4.5 },
-      "trang_thai_dat_chua_dat": { "SOT381": "dat", "SSH313": "dat", "FLS314": "dat", "POL307": "chua_dat" },
+      "chuyen_nganh_chon": {
+        "ma": "CNPM",
+        "ten": "Công nghệ phần mềm"
+      },
+      "danh_sach_mon_da_hoc": [
+        "SOT381",
+        "SSH313",
+        "FLS314",
+        "POL307"
+      ],
+      "diem_tung_mon": {
+        "SOT381": 7.5,
+        "SSH313": 7.9,
+        "FLS314": 7.1,
+        "POL307": 4.5
+      },
+      "trang_thai_dat_chua_dat": {
+        "SOT381": "Đạt",
+        "SSH313": "Đạt",
+        "FLS314": "Đạt",
+        "POL307": "Chưa đạt"
+      },
       "so_tin_chi_da_tich_luy": 9,
       "hoc_ky_hien_tai": 1,
-      "muc_tieu_hoc_tap": "giam_tai"
+      "muc_tieu_hoc_tap": "Giảm tải"
     }
   ]
 }
