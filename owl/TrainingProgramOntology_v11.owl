@@ -200,9 +200,6 @@
         <DataProperty IRI="#hasSemesterNumber"/>
     </Declaration>
     <Declaration>
-        <DataProperty IRI="#hasSemesterType"/>
-    </Declaration>
-    <Declaration>
         <DataProperty IRI="#hasSpecializationName"/>
     </Declaration>
     <Declaration>
@@ -330,51 +327,6 @@
     </Declaration>
     <Declaration>
         <NamedIndividual IRI="#CR_SV0002_SSH379"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="#CR_SV0004_FLS314"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="#CR_SV0004_FLS315"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="#CR_SV0004_MAT322"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="#CR_SV0004_MAT327"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="#CR_SV0004_POL310"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="#CR_SV0004_POL333"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="#CR_SV0004_SOT301"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="#CR_SV0004_SOT315"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="#CR_SV0004_SOT381"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="#CR_SV0004_SSH313"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="#CR_SV0004_SSH378"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="#CR_SV0004_POL307"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="#CR_SV0004_SOT320"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="#CR_SV0004_SOT331"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="#CR_SV0004_SOT332"/>
     </Declaration>
     <Declaration>
         <NamedIndividual IRI="#CR_SV0005_INS325"/>
@@ -1061,12 +1013,6 @@
         <NamedIndividual IRI="#SV0002"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual IRI="#SV0003"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="#SV0004"/>
-    </Declaration>
-    <Declaration>
         <NamedIndividual IRI="#SV0005"/>
     </Declaration>
     <Declaration>
@@ -1150,6 +1096,12 @@
     <Declaration>
         <NamedIndividual IRI="#851111"/>
     </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#SV0003"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#SV0004"/>
+    </Declaration>
     <SubClassOf>
         <Class IRI="#CLCStudent"/>
         <Class IRI="#Student"/>
@@ -1176,7 +1128,7 @@
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#GeneralEducationCourse"/>
-        <Class IRI="#InformationTechnology"/>
+        <Class IRI="#Course"/>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#Graduate"/>
@@ -1389,66 +1341,6 @@
     <ClassAssertion>
         <Class IRI="#CourseResult"/>
         <NamedIndividual IRI="#CR_SV0002_SSH379"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="#CourseResult"/>
-        <NamedIndividual IRI="#CR_SV0004_FLS314"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="#CourseResult"/>
-        <NamedIndividual IRI="#CR_SV0004_FLS315"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="#CourseResult"/>
-        <NamedIndividual IRI="#CR_SV0004_MAT322"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="#CourseResult"/>
-        <NamedIndividual IRI="#CR_SV0004_MAT327"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="#CourseResult"/>
-        <NamedIndividual IRI="#CR_SV0004_POL310"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="#CourseResult"/>
-        <NamedIndividual IRI="#CR_SV0004_POL333"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="#CourseResult"/>
-        <NamedIndividual IRI="#CR_SV0004_SOT301"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="#CourseResult"/>
-        <NamedIndividual IRI="#CR_SV0004_SOT315"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="#CourseResult"/>
-        <NamedIndividual IRI="#CR_SV0004_SOT381"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="#CourseResult"/>
-        <NamedIndividual IRI="#CR_SV0004_SSH313"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="#CourseResult"/>
-        <NamedIndividual IRI="#CR_SV0004_SSH378"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="#CourseResult"/>
-        <NamedIndividual IRI="#CR_SV0004_POL307"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="#CourseResult"/>
-        <NamedIndividual IRI="#CR_SV0004_SOT320"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="#CourseResult"/>
-        <NamedIndividual IRI="#CR_SV0004_SOT331"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="#CourseResult"/>
-        <NamedIndividual IRI="#CR_SV0004_SOT332"/>
     </ClassAssertion>
     <ClassAssertion>
         <Class IRI="#CourseResult"/>
@@ -5511,161 +5403,6 @@
         <ObjectProperty IRI="#hasCompletedCourse"/>
         <NamedIndividual IRI="#SV0004"/>
         <NamedIndividual IRI="#SSH378"/>
-    </ObjectPropertyAssertion>
-    <ObjectPropertyAssertion>
-        <ObjectProperty IRI="#hasFailedCourse"/>
-        <NamedIndividual IRI="#SV0004"/>
-        <NamedIndividual IRI="#POL307"/>
-    </ObjectPropertyAssertion>
-    <ObjectPropertyAssertion>
-        <ObjectProperty IRI="#hasFailedCourse"/>
-        <NamedIndividual IRI="#SV0004"/>
-        <NamedIndividual IRI="#SOT320"/>
-    </ObjectPropertyAssertion>
-    <ObjectPropertyAssertion>
-        <ObjectProperty IRI="#hasFailedCourse"/>
-        <NamedIndividual IRI="#SV0004"/>
-        <NamedIndividual IRI="#SOT331"/>
-    </ObjectPropertyAssertion>
-    <ObjectPropertyAssertion>
-        <ObjectProperty IRI="#hasFailedCourse"/>
-        <NamedIndividual IRI="#SV0004"/>
-        <NamedIndividual IRI="#SOT332"/>
-    </ObjectPropertyAssertion>
-    <ObjectPropertyAssertion>
-        <ObjectProperty IRI="#hasChosenSpecialization"/>
-        <NamedIndividual IRI="#SV0004"/>
-        <NamedIndividual IRI="#CNPM"/>
-    </ObjectPropertyAssertion>
-    <ObjectPropertyAssertion>
-        <ObjectProperty IRI="#hasCompletedCourse"/>
-        <NamedIndividual IRI="#SV0004"/>
-        <NamedIndividual IRI="#FLS314"/>
-    </ObjectPropertyAssertion>
-    <ObjectPropertyAssertion>
-        <ObjectProperty IRI="#hasCompletedCourse"/>
-        <NamedIndividual IRI="#SV0004"/>
-        <NamedIndividual IRI="#FLS315"/>
-    </ObjectPropertyAssertion>
-    <ObjectPropertyAssertion>
-        <ObjectProperty IRI="#hasCompletedCourse"/>
-        <NamedIndividual IRI="#SV0004"/>
-        <NamedIndividual IRI="#MAT322"/>
-    </ObjectPropertyAssertion>
-    <ObjectPropertyAssertion>
-        <ObjectProperty IRI="#hasCompletedCourse"/>
-        <NamedIndividual IRI="#SV0004"/>
-        <NamedIndividual IRI="#MAT327"/>
-    </ObjectPropertyAssertion>
-    <ObjectPropertyAssertion>
-        <ObjectProperty IRI="#hasCompletedCourse"/>
-        <NamedIndividual IRI="#SV0004"/>
-        <NamedIndividual IRI="#POL310"/>
-    </ObjectPropertyAssertion>
-    <ObjectPropertyAssertion>
-        <ObjectProperty IRI="#hasCompletedCourse"/>
-        <NamedIndividual IRI="#SV0004"/>
-        <NamedIndividual IRI="#POL333"/>
-    </ObjectPropertyAssertion>
-    <ObjectPropertyAssertion>
-        <ObjectProperty IRI="#hasCompletedCourse"/>
-        <NamedIndividual IRI="#SV0004"/>
-        <NamedIndividual IRI="#SOT301"/>
-    </ObjectPropertyAssertion>
-    <ObjectPropertyAssertion>
-        <ObjectProperty IRI="#hasCompletedCourse"/>
-        <NamedIndividual IRI="#SV0004"/>
-        <NamedIndividual IRI="#SOT315"/>
-    </ObjectPropertyAssertion>
-    <ObjectPropertyAssertion>
-        <ObjectProperty IRI="#hasCompletedCourse"/>
-        <NamedIndividual IRI="#SV0004"/>
-        <NamedIndividual IRI="#SOT381"/>
-    </ObjectPropertyAssertion>
-    <ObjectPropertyAssertion>
-        <ObjectProperty IRI="#hasCompletedCourse"/>
-        <NamedIndividual IRI="#SV0004"/>
-        <NamedIndividual IRI="#SSH313"/>
-    </ObjectPropertyAssertion>
-    <ObjectPropertyAssertion>
-        <ObjectProperty IRI="#hasCompletedCourse"/>
-        <NamedIndividual IRI="#SV0004"/>
-        <NamedIndividual IRI="#SSH378"/>
-    </ObjectPropertyAssertion>
-    <ObjectPropertyAssertion>
-        <ObjectProperty IRI="#hasCourseResult"/>
-        <NamedIndividual IRI="#SV0004"/>
-        <NamedIndividual IRI="#CR_SV0004_FLS314"/>
-    </ObjectPropertyAssertion>
-    <ObjectPropertyAssertion>
-        <ObjectProperty IRI="#hasCourseResult"/>
-        <NamedIndividual IRI="#SV0004"/>
-        <NamedIndividual IRI="#CR_SV0004_FLS315"/>
-    </ObjectPropertyAssertion>
-    <ObjectPropertyAssertion>
-        <ObjectProperty IRI="#hasCourseResult"/>
-        <NamedIndividual IRI="#SV0004"/>
-        <NamedIndividual IRI="#CR_SV0004_MAT322"/>
-    </ObjectPropertyAssertion>
-    <ObjectPropertyAssertion>
-        <ObjectProperty IRI="#hasCourseResult"/>
-        <NamedIndividual IRI="#SV0004"/>
-        <NamedIndividual IRI="#CR_SV0004_MAT327"/>
-    </ObjectPropertyAssertion>
-    <ObjectPropertyAssertion>
-        <ObjectProperty IRI="#hasCourseResult"/>
-        <NamedIndividual IRI="#SV0004"/>
-        <NamedIndividual IRI="#CR_SV0004_POL310"/>
-    </ObjectPropertyAssertion>
-    <ObjectPropertyAssertion>
-        <ObjectProperty IRI="#hasCourseResult"/>
-        <NamedIndividual IRI="#SV0004"/>
-        <NamedIndividual IRI="#CR_SV0004_POL333"/>
-    </ObjectPropertyAssertion>
-    <ObjectPropertyAssertion>
-        <ObjectProperty IRI="#hasCourseResult"/>
-        <NamedIndividual IRI="#SV0004"/>
-        <NamedIndividual IRI="#CR_SV0004_SOT301"/>
-    </ObjectPropertyAssertion>
-    <ObjectPropertyAssertion>
-        <ObjectProperty IRI="#hasCourseResult"/>
-        <NamedIndividual IRI="#SV0004"/>
-        <NamedIndividual IRI="#CR_SV0004_SOT315"/>
-    </ObjectPropertyAssertion>
-    <ObjectPropertyAssertion>
-        <ObjectProperty IRI="#hasCourseResult"/>
-        <NamedIndividual IRI="#SV0004"/>
-        <NamedIndividual IRI="#CR_SV0004_SOT381"/>
-    </ObjectPropertyAssertion>
-    <ObjectPropertyAssertion>
-        <ObjectProperty IRI="#hasCourseResult"/>
-        <NamedIndividual IRI="#SV0004"/>
-        <NamedIndividual IRI="#CR_SV0004_SSH313"/>
-    </ObjectPropertyAssertion>
-    <ObjectPropertyAssertion>
-        <ObjectProperty IRI="#hasCourseResult"/>
-        <NamedIndividual IRI="#SV0004"/>
-        <NamedIndividual IRI="#CR_SV0004_SSH378"/>
-    </ObjectPropertyAssertion>
-    <ObjectPropertyAssertion>
-        <ObjectProperty IRI="#hasCourseResult"/>
-        <NamedIndividual IRI="#SV0004"/>
-        <NamedIndividual IRI="#CR_SV0004_POL307"/>
-    </ObjectPropertyAssertion>
-    <ObjectPropertyAssertion>
-        <ObjectProperty IRI="#hasCourseResult"/>
-        <NamedIndividual IRI="#SV0004"/>
-        <NamedIndividual IRI="#CR_SV0004_SOT320"/>
-    </ObjectPropertyAssertion>
-    <ObjectPropertyAssertion>
-        <ObjectProperty IRI="#hasCourseResult"/>
-        <NamedIndividual IRI="#SV0004"/>
-        <NamedIndividual IRI="#CR_SV0004_SOT331"/>
-    </ObjectPropertyAssertion>
-    <ObjectPropertyAssertion>
-        <ObjectProperty IRI="#hasCourseResult"/>
-        <NamedIndividual IRI="#SV0004"/>
-        <NamedIndividual IRI="#CR_SV0004_SOT332"/>
     </ObjectPropertyAssertion>
     <ObjectPropertyAssertion>
         <ObjectProperty IRI="#hasFailedCourse"/>
@@ -10118,6 +9855,11 @@
         <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#decimal">2</Literal>
     </DataPropertyAssertion>
     <DataPropertyAssertion>
+        <DataProperty IRI="#currentSemester"/>
+        <NamedIndividual IRI="#SV0001"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">2</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
         <DataProperty IRI="#enrollmentYear"/>
         <NamedIndividual IRI="#SV0001"/>
         <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">2023</Literal>
@@ -11088,10 +10830,6 @@
         <DataProperty IRI="#hasSemesterNumber"/>
         <DataProperty abbreviatedIRI="owl:topDataProperty"/>
     </SubDataPropertyOf>
-    <SubDataPropertyOf>
-        <DataProperty IRI="#hasSemesterType"/>
-        <DataProperty abbreviatedIRI="owl:topDataProperty"/>
-    </SubDataPropertyOf>
     <FunctionalDataProperty>
         <DataProperty IRI="#courseStatus"/>
     </FunctionalDataProperty>
@@ -11155,10 +10893,6 @@
         <Class IRI="#Semester"/>
     </DataPropertyDomain>
     <DataPropertyDomain>
-        <DataProperty IRI="#hasSemesterType"/>
-        <Class IRI="#Semester"/>
-    </DataPropertyDomain>
-    <DataPropertyDomain>
         <DataProperty IRI="#hasSpecializationName"/>
         <Class IRI="#Specialization"/>
     </DataPropertyDomain>
@@ -11217,10 +10951,6 @@
     <DataPropertyRange>
         <DataProperty IRI="#hasSemesterNumber"/>
         <Datatype abbreviatedIRI="xsd:int"/>
-    </DataPropertyRange>
-    <DataPropertyRange>
-        <DataProperty IRI="#hasSemesterType"/>
-        <Datatype abbreviatedIRI="xsd:integer"/>
     </DataPropertyRange>
     <DataPropertyRange>
         <DataProperty IRI="#hasSpecializationName"/>
