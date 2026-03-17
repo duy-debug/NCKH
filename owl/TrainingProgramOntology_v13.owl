@@ -10105,7 +10105,7 @@
     <DataPropertyAssertion>
         <DataProperty IRI="#hasCredit"/>
         <NamedIndividual IRI="#NEC321"/>
-        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#decimal">3</Literal>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">3</Literal>
     </DataPropertyAssertion>
     <DataPropertyAssertion>
         <DataProperty IRI="#hasOpenSemesterType"/>
@@ -10890,7 +10890,7 @@
     <DataPropertyAssertion>
         <DataProperty IRI="#currentSemester"/>
         <NamedIndividual IRI="#SV0001"/>
-        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#decimal">2</Literal>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">2</Literal>
     </DataPropertyAssertion>
     <DataPropertyAssertion>
         <DataProperty IRI="#enrollmentYear"/>
@@ -10945,7 +10945,7 @@
     <DataPropertyAssertion>
         <DataProperty IRI="#enrollmentYear"/>
         <NamedIndividual IRI="#SV0003"/>
-        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#decimal">2025</Literal>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">2025</Literal>
     </DataPropertyAssertion>
     <DataPropertyAssertion>
         <DataProperty IRI="#StudentID"/>
@@ -11295,7 +11295,7 @@
     <DataPropertyAssertion>
         <DataProperty IRI="#hasSemesterNumber"/>
         <NamedIndividual IRI="#Semester1"/>
-        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#decimal">1</Literal>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">1</Literal>
     </DataPropertyAssertion>
     <DataPropertyAssertion>
         <DataProperty IRI="#hasSemesterNumber"/>
