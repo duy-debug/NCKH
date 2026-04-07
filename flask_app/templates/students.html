@@ -80,6 +80,10 @@
                     <div class="course-list" id="failedCoursesList"></div>
                 </div>
             </div>
+
+            <div class="action-buttons profile-actions">
+                <button onclick="openCourseHistory()" class="btn btn-secondary" type="button">Chi tiết danh sách</button>
+            </div>
         </div>
     </section>
 
@@ -234,6 +238,22 @@
         document.getElementById('studentProfileSection').style.display = 'block';
         document.getElementById('recommendationActionSection').style.display = 'block';
         document.getElementById('resultsSection').style.display = 'none';
+    }
+
+    function openCourseHistory() {
+        const studentIdFromInline = currentStudent && currentStudent.student_id ? currentStudent.student_id : '';
+        const studentIdFromMainJs = window.selectedStudent && window.selectedStudent.student_id ? window.selectedStudent.student_id : '';
+        const studentIdFromSelect = (document.getElementById('studentSelect') || {}).value || '';
+        const studentIdFromSearch = ((document.getElementById('studentSearch') || {}).value || '').trim();
+
+        const studentId = (studentIdFromInline || studentIdFromMainJs || studentIdFromSelect || studentIdFromSearch || '').trim();
+
+        if (!studentId) {
+            showError('Vui lòng chọn hoặc nhập mã sinh viên trước khi xem chi tiết danh sách', 'warning');
+            return;
+        }
+
+        window.location.href = `/students/${encodeURIComponent(studentId)}/course-history`;
     }
 
     // Generate recommendation
@@ -567,6 +587,10 @@
         gap: 10px;
         margin-top: 20px;
         justify-content: flex-start;
+    }
+
+    .profile-actions {
+        margin-top: 16px;
     }
 
     .action-buttons button {

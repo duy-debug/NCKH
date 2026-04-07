@@ -3428,20 +3428,5 @@
             }
         ],
         "danh sách môn chưa đạt": []
-    },
-    {
-        "mã sinh viên": "SS",
-        "tên sinh viên": "s",
-        "năm vào học": 2023,
-        "ngành": "Công Nghệ Thông Tin",
-        "chuyên ngành": "Chưa chọn chuyên ngành",
-        "mục tiêu học tập": "Đúng hạn",
-        "số tín chỉ đã tích lũy": 0,
-        "số tín chỉ đăng ký tối đa": 27,
-        "học kỳ hiện tại": 1,
-        "học kỳ dự kiến đăng ký tiếp theo": 2,
-        "danh sách môn đã học": {},
-        "điểm từng môn": [],
-        "danh sách môn chưa đạt": []
     }
 ]

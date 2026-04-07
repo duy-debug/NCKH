@@ -79,8 +79,88 @@ def create_app():
         """Student passed/failed course history page"""
         student = app.student_data_service.get_student(student_id)
         if not student:
-            return jsonify({'success': False, 'error': f'Student {student_id} not found'}), 404
-        return render_template('student_course_history.html', student=student)
+            return render_template(
+                'student_course_history.html',
+                student=None,
+                error=f'Không tìm thấy sinh viên {student_id}',
+                passed_rows=[],
+                failed_rows=[],
+            ), 404
+
+        engine = getattr(app, 'recommendation_engine', None)
+        course_data = getattr(engine, 'course_data', {}) if engine is not None else {}
+
+        def build_rows(codes, status_label):
+            rows = []
+            for idx, code in enumerate(codes, start=1):
+                info = course_data.get(code, {}) if isinstance(course_data, dict) else {}
+                rows.append({
+                    'stt': idx,
+                    'code': code,
+                    'name': info.get('name') or code,
+                    'credits': info.get('credit') if info else None,
+                    'grade': student.course_grades.get(code) if student.course_grades else None,
+                    'status': status_label,
+                })
+            return rows
+
+        passed_rows = build_rows(student.passed_courses or [], 'Đạt')
+        failed_rows = build_rows(student.failed_courses or [], 'Chưa đạt')
+
+        all_rows = (passed_rows or []) + (failed_rows or [])
+
+        allowed_page_sizes = (10, 20, 50)
+        page_size = request.args.get('per_page', 10, type=int) or 10
+        if page_size not in allowed_page_sizes:
+            page_size = 10
+
+        page = request.args.get('page', 1, type=int) or 1
+        if page < 1:
+            page = 1
+
+        total_rows = len(all_rows)
+        total_pages = max(1, (total_rows + page_size - 1) // page_size)
+        if page > total_pages:
+            page = total_pages
+
+        start_index = (page - 1) * page_size
+        end_index = start_index + page_size
+        paged_rows = all_rows[start_index:end_index]
+
+        display_from = 0 if total_rows == 0 else (start_index + 1)
+        display_to = min(start_index + len(paged_rows), total_rows)
+
+        # Build compact page number list with ellipses (None)
+        page_numbers = []
+        if total_pages <= 7:
+            page_numbers = list(range(1, total_pages + 1))
+        else:
+            candidates = {1, total_pages, page, page - 1, page + 1}
+            candidates = sorted([p for p in candidates if 1 <= p <= total_pages])
+            last = None
+            for p in candidates:
+                if last is not None and p - last > 1:
+                    page_numbers.append(None)  # ellipsis
+                page_numbers.append(p)
+                last = p
+
+        return render_template(
+            'student_course_history.html',
+            student=student,
+            error=None,
+            passed_rows=passed_rows,
+            failed_rows=failed_rows,
+            paged_rows=paged_rows,
+            page=page,
+            page_size=page_size,
+            total_rows=total_rows,
+            total_pages=total_pages,
+            start_index=start_index,
+            display_from=display_from,
+            display_to=display_to,
+            page_numbers=page_numbers,
+            base_url=f'/students/{student.student_id}/course-history',
+        )
     
     return app
 
