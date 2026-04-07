@@ -10,8 +10,11 @@ let selectedStudent = null;
 // ========== INITIALIZATION ==========
 document.addEventListener('DOMContentLoaded', function () {
     console.log('Initializing students page...');
-    loadAllStudents();
+    if (document.getElementById('studentSelect')) {
+        loadAllStudents();
+    }
     initNavbarScroll();
+    initFlashToasts();
 });
 
 // ========== NAVBAR SCROLL ANIMATION ==========
@@ -53,6 +56,10 @@ async function loadAllStudents() {
 
 function populateStudentSelect() {
     const select = document.getElementById('studentSelect');
+    if (!select) {
+        return;
+    }
+
     select.innerHTML = '<option value="">-- Chọn sinh viên --</option>';
 
     allStudents.forEach(student => {
@@ -69,7 +76,7 @@ function searchStudent() {
     const searchTerm = searchInput.value.trim().toUpperCase();
 
     if (!searchTerm) {
-        alert('Vui lòng nhập mã sinh viên');
+        showError('Vui lòng nhập mã sinh viên', 'warning');
         return;
     }
 
@@ -157,7 +164,7 @@ function displayStudentProfile(student) {
 // ========== STEP 3: GENERATE RECOMMENDATION ==========
 async function generateRecommendation() {
     if (!selectedStudent) {
-        alert('Vui lòng chọn sinh viên');
+        showError('Vui lòng chọn sinh viên', 'warning');
         return;
     }
 
@@ -256,16 +263,8 @@ function translateStudyGoal(goal) {
 /**
  * Show error message
  */
-function showError(message) {
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'error-message';
-    errorDiv.textContent = message;
-
-    const container = document.querySelector('.students-container');
-    if (container) {
-        container.insertBefore(errorDiv, container.firstChild);
-        setTimeout(() => errorDiv.remove(), 5000);
-    }
+function showError(message, type = 'error') {
+    showToast(message, type);
 }
 
 /**
@@ -275,4 +274,53 @@ function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+}
+
+function initFlashToasts() {
+    document.querySelectorAll('.flash-message[data-message]').forEach(item => {
+        const message = item.dataset.message;
+        const type = item.dataset.type || 'info';
+        if (message) {
+            showToast(message, type);
+        }
+        item.remove();
+    });
+}
+
+function showToast(message, type = 'info', duration = 5000) {
+    const container = document.getElementById('toastContainer');
+    if (!container || !message) {
+        return;
+    }
+
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'toast-close';
+    closeBtn.type = 'button';
+    closeBtn.setAttribute('aria-label', 'Đóng thông báo');
+    closeBtn.innerHTML = '&times;';
+
+    const content = document.createElement('div');
+    content.className = 'toast-message';
+    content.textContent = message;
+
+    const progress = document.createElement('div');
+    progress.className = 'toast-progress';
+    progress.style.animationDuration = `${duration}ms`;
+
+    toast.appendChild(closeBtn);
+    toast.appendChild(content);
+    toast.appendChild(progress);
+    container.appendChild(toast);
+
+    const removeToast = () => {
+        if (toast.parentNode) {
+            toast.parentNode.removeChild(toast);
+        }
+    };
+
+    closeBtn.addEventListener('click', removeToast);
+    window.setTimeout(removeToast, duration);
 }

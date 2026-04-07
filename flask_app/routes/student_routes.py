@@ -1,4 +1,4 @@
-"""
+﻿"""
 Routes for Student data management
 """
 
@@ -13,7 +13,7 @@ def list_students():
     try:
         service = current_app.student_data_service
         students = service.get_all_students()
-        
+
         result = [
             {
                 'student_id': s.student_id,
@@ -24,11 +24,106 @@ def list_students():
             }
             for s in students
         ]
-        
+
         return jsonify({
             'success': True,
             'data': result,
             'total': len(result),
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e),
+        }), 500
+
+
+@bp.route('', methods=['POST'])
+def create_student():
+    """Tạo mới sinh viên và lưu vào JSON"""
+    try:
+        payload = request.get_json() or {}
+        if not payload:
+            return jsonify({
+                'success': False,
+                'error': 'Không nhận được dữ liệu sinh viên',
+            }), 400
+
+        engine = current_app.recommendation_engine
+        if engine is None:
+            return jsonify({
+                'success': False,
+                'error': 'Recommendation engine chưa sẵn sàng để tải dữ liệu',
+            }), 500
+
+        course_catalog = _get_course_catalog(engine)
+        specialization_options = _get_specializations(engine)
+        student = current_app.student_data_service.create_student(
+            payload,
+            course_catalog,
+            specialization_options,
+        )
+
+        return jsonify({
+            'success': True,
+            'message': f'Đã thêm sinh viên {student.student_id}',
+            'data': student.to_dict(),
+        }), 201
+    except ValueError as e:
+        return jsonify({
+            'success': False,
+            'error': str(e),
+        }), 400
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e),
+        }), 500
+
+
+@bp.route('/courses', methods=['GET'])
+def list_courses():
+    """Lấy danh mục môn học từ ontology"""
+    try:
+        engine = current_app.recommendation_engine
+        if engine is None:
+            return jsonify({
+                'success': False,
+                'error': 'Recommendation engine không khởi tạo được',
+            }), 500
+
+        catalog = sorted(
+            _get_course_catalog(engine).values(),
+            key=lambda item: (item['code'], item['name'])
+        )
+
+        return jsonify({
+            'success': True,
+            'data': catalog,
+            'total': len(catalog),
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e),
+        }), 500
+
+
+@bp.route('/specializations', methods=['GET'])
+def list_specializations():
+    """Lấy danh sách chuyên ngành từ ontology"""
+    try:
+        engine = current_app.recommendation_engine
+        if engine is None:
+            return jsonify({
+                'success': False,
+                'error': 'Recommendation engine không khởi tạo được',
+            }), 500
+
+        options = _get_specializations(engine)
+        return jsonify({
+            'success': True,
+            'data': options,
+            'total': len(options),
         })
     except Exception as e:
         return jsonify({
@@ -43,13 +138,13 @@ def get_student(student_id: str):
     try:
         service = current_app.student_data_service
         student = service.get_student(student_id)
-        
+
         if not student:
             return jsonify({
                 'success': False,
                 'error': f'Không tìm thấy sinh viên {student_id}',
             }), 404
-        
+
         return jsonify({
             'success': True,
             'data': student.to_dict(),
@@ -59,3 +154,19 @@ def get_student(student_id: str):
             'success': False,
             'error': str(e),
         }), 500
+
+
+def _get_course_catalog(engine) -> dict:
+    catalog = {}
+    for code, info in engine.course_data.items():
+        catalog[code] = {
+            'code': code,
+            'name': info.get('name', code),
+            'credits': info.get('credit', 0),
+        }
+    return catalog
+
+
+def _get_specializations(engine) -> list:
+    options = sorted({name.strip() for name in engine.specializations_map.values() if isinstance(name, str) and name.strip()})
+    return options

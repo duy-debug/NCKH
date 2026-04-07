@@ -68,6 +68,19 @@ def create_app():
         """Students page with recommendation interface"""
         print("[DEBUG] Route /students accessed")
         return render_template('students.html')
+
+    @app.route('/students/new')
+    def create_student_page():
+        """Add new student page"""
+        return render_template('add_student.html')
+
+    @app.route('/students/<student_id>/course-history')
+    def student_course_history_page(student_id):
+        """Student passed/failed course history page"""
+        student = app.student_data_service.get_student(student_id)
+        if not student:
+            return jsonify({'success': False, 'error': f'Student {student_id} not found'}), 404
+        return render_template('student_course_history.html', student=student)
     
     return app
 

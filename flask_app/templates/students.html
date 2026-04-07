@@ -135,8 +135,6 @@
         </div>
     </section>
 
-    <!-- Error Message -->
-    <div id="errorMessage" class="error-message" style="display: none;"></div>
 </div>
 
 <script>
@@ -165,7 +163,7 @@
                 });
             })
             .catch(error => {
-                showError('Lỗi tải danh sách sinh viên: ' + error);
+                showError('Lỗi tải danh sách sinh viên: ' + error, 'error');
                 console.error('Error:', error);
             });
     }
@@ -174,7 +172,7 @@
     function searchStudent() {
         const studentId = document.getElementById('studentSearch').value.trim();
         if (!studentId) {
-            showError('Vui lòng nhập mã sinh viên');
+            showError('Vui lòng nhập mã sinh viên', 'warning');
             return;
         }
         loadStudent(studentId);
@@ -198,11 +196,11 @@
                     displayStudentProfile(currentStudent);
                     hideError();
                 } else {
-                    showError(data.error || 'Không tìm thấy sinh viên');
+                    showError(data.error || 'Không tìm thấy sinh viên', 'warning');
                 }
             })
             .catch(error => {
-                showError('Lỗi tải thông tin sinh viên: ' + error);
+                showError('Lỗi tải thông tin sinh viên: ' + error, 'error');
                 console.error('Error:', error);
             });
     }
@@ -241,7 +239,7 @@
     // Generate recommendation
     function generateRecommendation() {
         if (!currentStudent) {
-            showError('Vui lòng chọn sinh viên');
+            showError('Vui lòng chọn sinh viên', 'warning');
             return;
         }
 
@@ -267,13 +265,13 @@
                     displayRecommendationResults(currentRecommendation);
                     hideError();
                 } else {
-                    showError(data.error || 'Lỗi tạo kế hoạch học tập');
+                    showError(data.error || 'Lỗi tạo kế hoạch học tập', 'error');
                 }
             })
             .catch(error => {
                 document.getElementById('loadingSpinner').style.display = 'none';
                 document.getElementById('generateBtn').disabled = false;
-                showError('Lỗi: ' + error);
+                showError('Lỗi: ' + error, 'error');
                 console.error('Error:', error);
             });
     }
@@ -342,15 +340,13 @@
     }
 
     // Show error message
-    function showError(message) {
-        const errorDiv = document.getElementById('errorMessage');
-        errorDiv.textContent = message;
-        errorDiv.style.display = 'block';
+    function showError(message, type = 'error') {
+        showToast(message, type);
     }
 
     // Hide error message
     function hideError() {
-        document.getElementById('errorMessage').style.display = 'none';
+        return;
     }
 </script>
 

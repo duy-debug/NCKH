@@ -14,6 +14,7 @@
             <ul class="nav-links">
                 <li><a href="/">Trang chủ</a></li>
                 <li><a href="/students">Danh sách sinh viên</a></li>
+                <li><a href="/students/new">Thêm sinh viên</a></li>
             </ul>
         </div>
     </nav>
@@ -22,13 +23,15 @@
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 {% for message in messages %}
-                    <div class="alert alert-info">{{ message }}</div>
+                    <div class="flash-message" data-message="{{ message | e }}" data-type="info" hidden></div>
                 {% endfor %}
             {% endif %}
         {% endwith %}
 
         {% block content %}{% endblock %}
     </main>
+
+    <div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
 
     <footer>
         <p>
