@@ -1,6 +1,5 @@
 """
-Generate explanation for recommendation decisions
-Tạo giải thích chi tiết về quyết định gợi ý môn học
+Tạo giải thích cho quyết định gợi ý môn học
 """
 
 from typing import List, Dict
@@ -14,58 +13,58 @@ class ExplanationGenerator:
                                          beam_width: int,
                                          iterations: int,
                                          final_quota_fill: int) -> str:
-        """Giải thích chi tiết thuật toán Beam Search"""
+        """Giải thích chi tiết thuật toán tìm kiếm chùm"""
         
         explanation = f"""
-=== GIẢI THÍCH THUẬT TOÁN BEAM SEARCH ===
+=== GIẢI THÍCH THUẬT TOÁN TÌM KIẾM CHÙM ===
 
 1. TỔNG QUAN:
-   - Beam width: {beam_width} (giữ {beam_width} trạng thái tốt nhất mỗi vòng)
-   - Mục tiêu: Tìm tổ hợp môn tối ưu trong constraint (credit, quota, score)
-   - Kết quả: Đạt {final_quota_fill}/4 quota danh mục tự chọn
+   - Độ rộng chùm: {beam_width} (giữ {beam_width} trạng thái tốt nhất mỗi vòng)
+   - Mục tiêu: Tìm tổ hợp môn tối ưu trong ràng buộc (tín chỉ, hạn ngạch, điểm)
+   - Kết quả: Đạt {final_quota_fill}/4 hạn ngạch danh mục tự chọn
 
 2. LUỒNG THUẬT TOÁN:
-   Vòng lặp (until convergence):
-     - Với mỗi state hiện tại:
+   Vòng lặp (đến khi hội tụ):
+     - Với mỗi trạng thái hiện tại:
        • Lấy tất cả môn chưa chọn
-       • Thử thêm từng môn (hoặc bundle corequisite)
-       • Kiểm tra: credit ≤ max ✓, quota OK ✓, tiên quyết ✓?
-       → Nếu OK, tạo state mới: next_state = state + course
+       • Thử thêm từng môn (hoặc gộp môn song hành)
+       • Kiểm tra: tín chỉ ≤ tối đa ✓, hạn ngạch OK ✓, tiên quyết ✓?
+       → Nếu OK, tạo trạng thái mới: trạng thái_mới = trạng thái + môn
        
-     - Giữ lại TOP {beam_width} state theo:
-       1. Đáp ứng quota tự chọn cao nhất
+     - Giữ lại TOP {beam_width} trạng thái theo:
+       1. Đáp ứng hạn ngạch tự chọn cao nhất
        2. Điểm ưu tiên cao nhất (nếu hòa)
        3. Tín chỉ nhiều nhất (nếu hòa)
    
-   Kết thúc khi không có state mới hoặc đã lặp đủ lần
+   Kết thúc khi không có trạng thái mới hoặc đã lặp đủ lần
 
 3. CHỌN KẾT QUẢ:
-   - Best state = state có (quota_score, priority_score, credit) cao nhất
+   - Trạng thái tốt nhất = trạng thái có (đáp ứng hạn ngạch, điểm ưu tiên, tín chỉ) cao nhất
    - Đảm bảo:
-     ✓ Tổng tín chỉ ≤ {beam_width * 3} (max credit)
-     ✓ Quota tự chọn phù hợp
+     ✓ Tổng tín chỉ ≤ {beam_width * 3} (tín chỉ tối đa)
+     ✓ Hạn ngạch tự chọn phù hợp
      ✓ Tất cả tiên quyết được thỏa
 
 4. ĐẶC ĐIỂM:
-   - Tư duy: Tìm gần-tối-ưu (near-optimal) thay vì brute force
-   - Thời gian: O(beam_width × num_courses) = Polynomial
-   - So sánh: Brute force sẽ là O(2^num_courses) = Exponential (không khả thi)
+   - Tư duy: Tìm gần tối ưu thay vì vét cạn
+   - Thời gian: O(beam_width × num_courses) (đa thức)
+   - So sánh: Vét cạn sẽ là O(2^num_courses) (mũ, không khả thi)
 """
         return explanation
     
     def generate_heuristic_explanation(self) -> str:
-        """Giải thích công thức heuristic scoring"""
+        """Giải thích công thức chấm điểm"""
         
         explanation = """
-=== GIẢI THÍCH CÔNG THỨC HEURISTIC ===
+=== GIẢI THÍCH CÔNG THỨC CHẤM ĐIỂM ===
 
-Công thức Điểm Ưu Tiên (Priority Score):
+Công thức Điểm Ưu Tiên:
 
 H = debt × 1000 + doPhu × 20 + doTre × 50
 
   ┌─────────────────────────────────────────────────┐
   │ debt (Nợ Môn): 1 nếu bị trượt, 0 nếu chưa học   │
-  │ → Weight 1000 (cao nhất!)                       │
+  │ → Trọng số 1000 (cao nhất!)                     │
   │ → Ưu tiên: PHẢI học lại môn nợ trước           │
   │ → VD: SV0016 trượt INS330 → debt=1 → +1000      │
   └─────────────────────────────────────────────────┘
@@ -73,7 +72,7 @@ H = debt × 1000 + doPhu × 20 + doTre × 50
   ┌─────────────────────────────────────────────────┐
   │ doPhu (Số Môn Phụ Thuộc):                       │
   │ = số môn khác có tiên quyết là môn này          │
-  │ → Weight 20                                      │
+  │ → Trọng số 20                                    │
   │ → Ưu tiên: Học môn có nhiều "con em"          │
   │ → VD: SOT320 có 3 môn phụ thuộc → doPhu=3      │
   │      → +60 điểm                                 │
@@ -83,7 +82,7 @@ H = debt × 1000 + doPhu × 20 + doTre × 50
   ┌─────────────────────────────────────────────────┐
   │ doTre (Trễ Kỳ):                                 │
   │ = max(0, current_semester - recommended_sem)   │
-  │ → Weight 50                                      │
+  │ → Trọng số 50                                    │
   │ → Ưu tiên: Môn bị trễ so với lộ trình          │
   │ → VD: MAT327 khuyến nghị S3, SV ở S5:          │
   │      doTre = 5-3 = 2 → +100 điểm               │
@@ -94,7 +93,7 @@ H_total = H + openNow × 50 + recProximity × 10 + goalScore
 
   ┌─────────────────────────────────────────────────┐
   │ openNow: 1 nếu mở đúng kỳ đang đăng ký, 0      │
-  │ → Weight 50                                      │
+  │ → Trọng số 50                                    │
   │ → Logic: Môn mở sẵn là tốt, không cần chờ     │
   └─────────────────────────────────────────────────┘
 
@@ -120,7 +119,7 @@ VÍ DỤ THỰC TẾ:
 
 Học viên: SV0016, ở kỳ 3, mục tiêu "đúng hạn"
 
-Môn A: INS330 (Database)
+Môn A: INS330 (Cơ sở dữ liệu)
   - debt = 1 (trượt ở kỳ 1)
   - doPhu = 2 (SOT341, SOT342 cần INS330)
   - doTre = 3 - 2 = 1 (khuyến nghị kỳ 2, giờ kỳ 3)
@@ -131,9 +130,9 @@ Môn A: INS330 (Database)
   - goalScore = 30 (mục tiêu đúng hạn)
   - H_total = 1090 + 50 + 90 + 30 = 1260
   
-  → SCORE CAO → ƯU TIÊN ĐƯỢC CHỌ TRƯỚC
+  → ĐIỂM CAO → ƯU TIÊN ĐƯỢC CHỌN TRƯỚC
 
-Môn B: SOT350 (Elective, nước ngoài)
+Môn B: SOT350 (Tự chọn)
   - debt = 0 (chưa học)
   - doPhu = 0 (không có môn phụ thuộc)
   - doTre = 0 (khuyến nghị kỳ 4, hiện kỳ 3)
@@ -144,7 +143,7 @@ Môn B: SOT350 (Elective, nước ngoài)
   - goalScore = 30
   - H_total = 0 + 50 + 90 + 30 = 170
   
-  → SCORE THẤP → CHỌN SAU CÓ KHẢ NĂNG KHÔNG CHỌN
+  → ĐIỂM THẤP → CHỌN SAU (CÓ THỂ KHÔNG ĐƯỢC CHỌN)
 """
         return explanation
     
@@ -161,20 +160,20 @@ Mục tiêu học: {result.study_goal}
 KẾT QUẢ:
 ─────────
 
-Danh sách môn hợp lệ (đầu vào Beam Search):
+Danh sách môn hợp lệ (đầu vào tìm kiếm chùm):
   • Tổng số: {result.total_eligible_count} môn
   • Gồm: môn bắt buộc, tự chọn, học lại
   • Những môn này đã thỏa 8 điều kiện kinh doanh:
     ✓ Chưa đạt
     ✓ Tiên quyết OK
     ✓ Kỳ mở phù hợp
-    ✓ Kỳ khuyến nghị phù hợp goal
+    ✓ Kỳ khuyến nghị phù hợp mục tiêu
     ✓ Chuyên ngành khớp
     ✓ Tín chỉ không quá tải
     ✓ Không vi phạm ràng buộc cứng kỳ 8 vs kỳ 7
-    + Quota tự chọn chưa đầy
+    + Hạn ngạch tự chọn chưa đầy
 
-Tơ hợp đề xuất (kết quả Beam Search):
+Tổ hợp đề xuất (kết quả tìm kiếm chùm):
   • Tổng số: {result.total_recommended_count} môn
   • Tổng tín chỉ: {result.total_recommended_credits}/27
   • Danh sách:
@@ -183,12 +182,12 @@ Tơ hợp đề xuất (kết quả Beam Search):
         for i, course in enumerate(result.recommended_courses, 1):
             status = "Học lại" if course.is_retake else f"S{course.recommended_semester}"
             summary += f"\n    {i}. {course.code} - {course.name}\n"
-            summary += f"       TC: {course.credits} | {status} | Score: {course.total_priority_score:.0f}\n"
+            summary += f"       TC: {course.credits} | {status} | Điểm: {course.total_priority_score:.0f}\n"
             summary += f"       Lý do: {', '.join(course.reasons)}\n"
         
         summary += f"""
 
-TIẾN ĐỘ QUOTA TỰ CHỌN:
+TIẾN ĐỘ HẠN NGẠCH MÔN TỰ CHỌN:
 ─────────────────────
 
 Danh mục           | Đã Hoàn | Mục Tiêu | Còn Thiếu | Đã Chọn

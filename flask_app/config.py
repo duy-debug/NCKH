@@ -7,12 +7,12 @@ import os
 class Config:
     """Base Configuration"""
     
-    # Flask config
+    # Cấu hình Flask
     DEBUG = True
     TESTING = False
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-secret-key-change-in-production'
     
-    # Paths - Build dynamically from current file location
+    # Đường dẫn - Tạo động theo vị trí file hiện tại
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     
     ONTOLOGY_PATH = os.path.join(BASE_DIR, 'owl', 'ontology_v18.rdf')
@@ -20,17 +20,17 @@ class Config:
     STUDENT_DATA_CSV = os.path.join(BASE_DIR, 'StudentDataStandardization', 'DanhSachSinhVien.csv')
     REPORT_OUTPUT_DIR = os.path.join(BASE_DIR, 'StudentDataStandardization', 'reports')
     
-    # Recommendation Engine Parameters
+    # Tham số bộ máy gợi ý
     BEAM_WIDTH = 8
     REGISTER_MAX_CREDITS = 27
     REGISTER_MIN_CREDITS = 10
     
-    # Heuristic Weights
+    # Trọng số tính điểm
     WEIGHT_DEBT = 1000
     WEIGHT_LINK = 20
     WEIGHT_DELAY = 50
     
-    # Elective Quotas (default - can be customized by study goal)
+    # Hạn ngạch môn tự chọn (mặc định - có thể tùy chỉnh theo mục tiêu học)
     ELECTIVE_QUOTAS = {
         'general': 1,           # Môn đại cương tự chọn
         'physical': 2,          # Môn thể chất tự chọn
@@ -38,10 +38,10 @@ class Config:
         'specialization': 3,    # Môn chuyên ngành tự chọn
     }
     
-    # Study goals
+    # Mục tiêu học tập
     STUDY_GOALS = ['đúng hạn', 'giảm tải', 'học vượt']
     
-    # Majors
+    # Ngành học
     MAJORS = ['Công Nghệ Thông Tin', 'Kỹ Thuật Phần Mềm', 'Khoa Học Dữ Liệu']
 
 

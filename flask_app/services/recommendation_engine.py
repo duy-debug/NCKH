@@ -1,6 +1,6 @@
 """
-Recommendation Engine Service
-Refactored from recommend_courses.py into a reusable class for Flask app
+Dịch vụ bộ máy gợi ý
+Tách từ recommend_courses.py để dùng lại trong Flask app
 """
 
 import random
@@ -14,7 +14,7 @@ from flask_app.models.recommendation import (
     RecommendedCourse, RecommendationResult, BeamSearchState
 )
 
-# RDF URIs
+# URI RDF
 BASE_URI = "http://www.semanticweb.org/henrydao/ontologies/2025/7/TrainingProgramOntology#"
 
 PROP_courseCode = URIRef(BASE_URI + "courseCode")
@@ -37,7 +37,7 @@ CLASS_GeneralEducationCourse = URIRef(BASE_URI + "GeneralEducationCourse")
 CLASS_PhysicalEducationCourse = URIRef(BASE_URI + "PhysicalEducationCourse")
 CLASS_FoundationCourse = URIRef(BASE_URI + "FoundationCourse")
 
-# Constants
+# Hằng số
 REGISTER_MAX_CREDITS = 27
 REGISTER_MIN_CREDITS = 10
 
@@ -49,9 +49,9 @@ ELECTIVE_QUOTA_KEYS = ('general', 'physical', 'foundation', 'specialization')
 
 
 class RecommendationEngine:
-    """Hệ thống gợi ý kế hoạch học tập dựa trên Ontology và Beam Search"""
+    """Hệ thống gợi ý kế hoạch học tập dựa trên Ontology và tìm kiếm chùm"""
     
-    def __init__(self, 
+    def __init__(self,
                  ontology_path: str,
                  beam_width: int = 8,
                  max_credits: int = REGISTER_MAX_CREDITS,
@@ -59,15 +59,15 @@ class RecommendationEngine:
                  heuristic_weights: Optional[Dict[str, int]] = None,
                  elective_quotas: Optional[Dict[str, int]] = None):
         """
-        Khởi tạo Recommendation Engine
+        Khởi tạo bộ máy gợi ý
         
         Args:
             ontology_path: Đường dẫn đến file RDF ontology
-            beam_width: Độ rộng Beam Search (số state giữ lại mỗi vòng)
+            beam_width: Độ rộng tìm kiếm chùm (số trạng thái giữ lại mỗi vòng)
             max_credits: Tín chỉ tối đa mỗi học kỳ
             min_credits: Tín chỉ tối thiểu mỗi học kỳ
-            heuristic_weights: Trọng số công thức heuristic
-            elective_quotas: Quota target cho mỗi danh mục tự chọn
+            heuristic_weights: Trọng số công thức tính điểm
+            elective_quotas: Mục tiêu hạn ngạch cho mỗi danh mục tự chọn
         """
         self.ontology_path = ontology_path
         self.beam_width = beam_width
@@ -102,15 +102,15 @@ class RecommendationEngine:
         
         self.graph = Graph()
         
-        # Convert Windows path to proper file:// URI
+        # Chuyển đường dẫn Windows sang dạng file:// URI hợp lệ
         ontology_file = Path(self.ontology_path).resolve()
         
         if not ontology_file.exists():
-            raise FileNotFoundError(f"Ontology file not found: {self.ontology_path}")
+            raise FileNotFoundError(f"Không tìm thấy file ontology: {self.ontology_path}")
         
-        # Proper file URI conversion for Windows and Unix
+        # Chuyển đổi file URI phù hợp cho Windows và Unix
         if os.name == 'nt':  # Windows
-            # Convert to forward slashes and add file:/// prefix
+            # Đổi sang dấu / và thêm tiền tố file:///
             file_path = str(ontology_file).replace('\\', '/')
             ontology_uri = f'file:///{file_path}'
         else:  # Unix/Linux
@@ -253,7 +253,7 @@ class RecommendationEngine:
                 'elective_category': None,
             }
         
-        # Tính dependency count
+        # Tính số lượng môn phụ thuộc
         self.dependency_count = {code: 0 for code in self.course_data.keys()}
         for cinfo in self.course_data.values():
             for pr in cinfo.get('prereqs', []):
@@ -282,13 +282,13 @@ class RecommendationEngine:
         if study_goal not in ['đúng hạn', 'giảm tải', 'học vượt']:
             study_goal = 'đúng hạn'
         
-        # Random seed
+        # Hạt giống ngẫu nhiên
         rng = random.Random(f"{student.student_id}-{current_sem}-{next_sem}")
         
-        # Normalize student data
+        # Chuẩn hóa dữ liệu sinh viên
         passed_courses, failed_courses = self._normalize_student_data(student)
         
-        # Get valid courses (giữ lại các điều kiện)
+        # Lấy danh sách môn hợp lệ (giữ lại các điều kiện)
         valid_courses = self._get_valid_courses(
             student, passed_courses, failed_courses, 
             current_sem, next_sem, sem_type, study_goal
@@ -298,22 +298,22 @@ class RecommendationEngine:
         for code, info in self.course_data.items():
             info['elective_category'] = self._categorize_elective(code, info)
         
-        # Tính quota còn thiếu
+        # Tính hạn ngạch còn thiếu
         completed_elective_counts = self._count_completed_electives(passed_courses)
         remaining_elective_counts = {
             k: max(0, self.elective_quotas.get(k, 0) - completed_elective_counts.get(k, 0))
             for k in ELECTIVE_QUOTA_KEYS
         }
         
-        # Lọc eligible courses theo quota
+        # Lọc danh sách môn hợp lệ theo hạn ngạch
         eligible_courses = self._filter_by_elective_quota(valid_courses, remaining_elective_counts)
         
-        # Random choice cho tự chọn
+        # Chọn ngẫu nhiên môn tự chọn (nếu cần)
         beam_candidates = self._random_select_electives(
             eligible_courses, remaining_elective_counts, study_goal, rng
         )
         
-        # Beam Search
+        # Tìm kiếm chùm
         recommended_courses = self._beam_search_optimize(
             student, beam_candidates, completed_elective_counts, study_goal, rng
         )
@@ -321,7 +321,7 @@ class RecommendationEngine:
         # Tính toán kết quả
         total_recommended_credits = sum(c.credits for c in recommended_courses)
         
-        # Finalized elective counts
+        # Số lượng môn tự chọn đã chốt
         finalized_elective_counts = {k: 0 for k in ELECTIVE_QUOTA_KEYS}
         for course in recommended_courses:
             code = course.code
@@ -490,7 +490,7 @@ class RecommendationEngine:
                 corequisites=info.get('corequisites', []),
             ))
         
-        # Sort by priority
+        # Sắp xếp theo mức ưu tiên
         valid_courses.sort(key=lambda x: (
             -x.total_priority_score,
             not x.is_retake,
@@ -527,7 +527,7 @@ class RecommendationEngine:
     def _filter_by_elective_quota(self, 
                                   courses: List[RecommendedCourse],
                                   remaining_quotas: Dict[str, int]) -> List[RecommendedCourse]:
-        """Lọc môn theo quota còn thiếu"""
+        """Lọc môn theo hạn ngạch còn thiếu"""
         filtered = []
         for course in courses:
             info = self.course_data.get(course.code, {})
@@ -562,9 +562,9 @@ class RecommendationEngine:
                              completed_counts: Dict[str, int],
                              study_goal: str,
                              rng: random.Random) -> List[RecommendedCourse]:
-        """Beam Search để tối ưu tổ hợp môn"""
-        # Simplified beam search
-        # Khởi tạo state rỗng
+        """Tìm kiếm chùm để tối ưu tổ hợp môn"""
+        # Tìm kiếm chùm (phiên bản rút gọn)
+        # Khởi tạo trạng thái rỗng
         initial_state = {
             'selected_codes': set(),
             'selected_courses': [],
@@ -573,7 +573,7 @@ class RecommendationEngine:
             'elective_counts': {k: 0 for k in ELECTIVE_QUOTA_KEYS},
         }
         
-        # Greedy approach: thêm môn có score cao nhất
+        # Cách tham lam: thêm môn có điểm cao nhất
         selected_courses = []
         total_credit = 0
         
@@ -582,7 +582,7 @@ class RecommendationEngine:
                 info = self.course_data.get(course.code, {})
                 cat = info.get('elective_category')
                 
-                # Check quota
+                # Kiểm tra hạn ngạch
                 if cat and cat in ELECTIVE_QUOTA_KEYS:
                     if initial_state['elective_counts'][cat] >= completed_counts.get(cat, 0) + 1:
                         continue
@@ -595,7 +595,7 @@ class RecommendationEngine:
         
         return selected_courses
     
-    # Helper methods
+    # Các hàm hỗ trợ
     @staticmethod
     def _normalize_text(value: str) -> str:
         """Chuẩn hóa text"""
@@ -611,7 +611,7 @@ class RecommendationEngine:
     
     @staticmethod
     def _safe_int(value: Any, default: int) -> int:
-        """Convert to int safely"""
+        """Chuyển sang int an toàn"""
         try:
             if isinstance(value, int):
                 return value

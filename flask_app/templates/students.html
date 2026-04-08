@@ -5,8 +5,11 @@
 {% block content %}
 <div class="students-container">
     <h2>Quản Lý Kế Hoạch Học Tập Sinh Viên</h2>
+    <div class="students-actions">
+        <a href="/students/new" class="btn btn-primary">Thêm sinh viên</a>
+    </div>
 
-    <!-- Step 1: Student Selection -->
+    <!-- Bước 1: Chọn hoặc tìm sinh viên -->
     <section class="student-selection">
         <h3>Bước 1: Chọn hoặc tìm sinh viên</h3>
         <div class="selection-form">
@@ -27,7 +30,7 @@
         </div>
     </section>
 
-    <!-- Step 2: Student Profile -->
+    <!-- Bước 2: Thông tin sinh viên -->
     <section class="student-profile" id="studentProfileSection" style="display: none;">
         <h3>Bước 2: Thông tin sinh viên</h3>
         <div class="profile-card">
@@ -87,7 +90,7 @@
         </div>
     </section>
 
-    <!-- Step 3: Generate Recommendation -->
+    <!-- Bước 3: Tạo kế hoạch học tập -->
     <section class="recommendation-action" id="recommendationActionSection" style="display: none;">
         <h3>Bước 3: Tạo kế hoạch học tập</h3>
         <button onclick="generateRecommendation()" class="btn btn-primary" id="generateBtn">
@@ -98,7 +101,7 @@
         </div>
     </section>
 
-    <!-- Step 4: Recommendation Results -->
+    <!-- Bước 4: Kết quả gợi ý kế hoạch -->
     <section class="recommendation-results" id="resultsSection" style="display: none;">
         <h3>Bước 4: Kết quả gợi ý kế hoạch</h3>
 
@@ -142,16 +145,16 @@
 </div>
 
 <script>
-    // Store current student data
+    // Lưu dữ liệu sinh viên hiện tại
     let currentStudent = null;
     let currentRecommendation = null;
 
-    // Load student list on page load
+    // Tải danh sách sinh viên khi trang được mở
     document.addEventListener('DOMContentLoaded', function () {
         loadStudentList();
     });
 
-    // Load all students into select dropdown
+    // Đổ danh sách sinh viên vào ô chọn
     function loadStudentList() {
         fetch('/api/students')
             .then(response => response.json())
@@ -172,7 +175,7 @@
             });
     }
 
-    // Search student by ID
+    // Tìm sinh viên theo mã
     function searchStudent() {
         const studentId = document.getElementById('studentSearch').value.trim();
         if (!studentId) {
@@ -182,7 +185,7 @@
         loadStudent(studentId);
     }
 
-    // Handle student selection from dropdown
+    // Xử lý khi chọn sinh viên từ ô chọn
     function onStudentSelected() {
         const studentId = document.getElementById('studentSelect').value;
         if (studentId) {
@@ -190,7 +193,7 @@
         }
     }
 
-    // Load student profile
+    // Tải hồ sơ sinh viên
     function loadStudent(studentId) {
         fetch(`/api/students/${studentId}`)
             .then(response => response.json())
@@ -209,7 +212,7 @@
             });
     }
 
-    // Display student profile
+    // Hiển thị hồ sơ sinh viên
     function displayStudentProfile(student) {
         document.getElementById('profileStudentId').textContent = student.student_id;
         document.getElementById('profileName').textContent = student.name;
@@ -220,21 +223,21 @@
         document.getElementById('profileCredits').textContent = student.total_credits_accumulated;
         document.getElementById('profileMaxCredits').textContent = student.max_credits_to_register;
 
-        // Display passed courses
+        // Hiển thị môn đã học
         const passedList = student.passed_courses || [];
         document.getElementById('passedCoursesCount').textContent = `${passedList.length} môn`;
         document.getElementById('passedCoursesList').innerHTML = passedList.slice(0, 10)
             .map(c => `<span class="course-badge">${c}</span>`)
             .join('');
 
-        // Display failed courses
+        // Hiển thị môn chưa đạt
         const failedList = student.failed_courses || [];
         document.getElementById('failedCoursesCount').textContent = `${failedList.length} môn`;
         document.getElementById('failedCoursesList').innerHTML = failedList
             .map(c => `<span class="course-badge failed">${c}</span>`)
             .join('');
 
-        // Show sections
+        // Hiển thị các khu vực
         document.getElementById('studentProfileSection').style.display = 'block';
         document.getElementById('recommendationActionSection').style.display = 'block';
         document.getElementById('resultsSection').style.display = 'none';
@@ -256,7 +259,7 @@
         window.location.href = `/students/${encodeURIComponent(studentId)}/course-history`;
     }
 
-    // Generate recommendation
+    // Tạo gợi ý kế hoạch học tập
     function generateRecommendation() {
         if (!currentStudent) {
             showError('Vui lòng chọn sinh viên', 'warning');
@@ -296,14 +299,14 @@
             });
     }
 
-    // Display recommendation results
+    // Hiển thị kết quả gợi ý
     function displayRecommendationResults(result) {
-        // Summary
+        // Tóm tắt
         document.getElementById('resultTotalCourses').textContent = result.recommended_courses?.length || 0;
         document.getElementById('resultTotalCredits').textContent = result.total_recommended_credits || 0;
         document.getElementById('resultNextSemester').textContent = result.next_semester || '-';
 
-        // Recommended courses table
+        // Bảng danh sách môn được gợi ý
         const coursesList = document.getElementById('recommendedCoursesList');
         coursesList.innerHTML = '';
 
@@ -319,36 +322,22 @@
             coursesList.appendChild(row);
         });
 
-        // Algorithm details
+        // Chi tiết thuật toán
         document.getElementById('heuristicFormula').textContent = result.heuristic_formula || 'N/A';
-        document.getElementById('beamSearchDetails').textContent = result.beam_search_details || 'Beam Search width=8';
+        document.getElementById('beamSearchDetails').textContent = result.beam_search_details || 'Tìm kiếm chùm (độ rộng = 8)';
 
-        // Show results section
+        // Hiển thị khu vực kết quả
         document.getElementById('resultsSection').style.display = 'block';
 
-        // Scroll to results
+        // Cuộn đến khu vực kết quả
         document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
     }
 
-    // Export results as JSON
-    function exportResults() {
-        if (!currentRecommendation) return;
 
-        const dataStr = JSON.stringify(currentRecommendation, null, 2);
-        const dataBlob = new Blob([dataStr], { type: 'application/json' });
-        const url = URL.createObjectURL(dataBlob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `kehoach_${currentStudent.student_id}_${new Date().getTime()}.json`;
-        link.click();
-    }
 
-    // Print results
-    function printResults() {
-        window.print();
-    }
 
-    // Reset form
+
+    // Đặt lại form
     function resetForm() {
         currentStudent = null;
         currentRecommendation = null;
@@ -359,28 +348,37 @@
         document.getElementById('resultsSection').style.display = 'none';
     }
 
-    // Show error message
+    // Hiển thị thông báo lỗi
     function showError(message, type = 'error') {
         showToast(message, type);
     }
 
-    // Hide error message
+    // Ẩn thông báo lỗi
     function hideError() {
         return;
     }
 </script>
 
-<style>
+    <style>
     .students-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
+        /* Trang đang được bọc trong <main class="container"> ở base.html.
+           Tránh max-width/padding lồng nhau khiến nội dung hẹp hơn navbar. */
+        max-width: none;
+        width: 100%;
+        margin: 0;
+        padding: 0;
     }
 
     .students-container h2 {
         text-align: center;
         color: #333;
         margin-bottom: 30px;
+    }
+
+    .students-actions {
+        display: flex;
+        justify-content: flex-end;
+        margin: -18px 0 18px;
     }
 
     section {
@@ -561,7 +559,7 @@
         background: #f5f5f5;
     }
 
-    /* Keep short headers on one line (avoid wrapping "Mã môn học", "Tín chỉ") */
+    /* Giữ tiêu đề cột ngắn trên một dòng (tránh xuống dòng "Mã môn học", "Tín chỉ") */
     .recommended-courses {
         overflow-x: auto;
     }

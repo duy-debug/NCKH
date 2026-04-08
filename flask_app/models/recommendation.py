@@ -1,5 +1,5 @@
 """
-Recommendation Result Data Models
+Các model dữ liệu cho kết quả gợi ý
 """
 
 from dataclasses import dataclass, field, asdict
@@ -43,24 +43,24 @@ class RecommendationResult:
     total_recommended_count: int = 0
     total_recommended_credits: int = 0
     
-    # Quota tự chọn
+    # Hạn ngạch môn tự chọn
     elective_target_quotas: Dict[str, int] = field(default_factory=dict)
     elective_completed_counts: Dict[str, int] = field(default_factory=dict)
     elective_quota_remaining: Dict[str, int] = field(default_factory=dict)
     finalized_elective_counts: Dict[str, int] = field(default_factory=dict)
     
-    # Cảnh báo & Giải thích
+    # Cảnh báo và giải thích
     warnings: List[str] = field(default_factory=list)
     beam_search_details: str = ""
     heuristic_formula: str = ""
     
-    # Metadata
+    # Siêu dữ liệu
     generated_at: str = ""
     processing_time_ms: float = 0.0
     
     def to_dict(self):
         result = asdict(self)
-        # Convert nested dataclass lists to dicts
+        # Chuyển danh sách lớp dữ liệu lồng nhau thành từ điển
         result['eligible_courses'] = [c.to_dict() for c in self.eligible_courses]
         result['recommended_courses'] = [c.to_dict() for c in self.recommended_courses]
         return result
@@ -68,14 +68,14 @@ class RecommendationResult:
 
 @dataclass
 class BeamSearchState:
-    """State trong Beam Search algorithm"""
+    """Trạng thái trong thuật toán tìm kiếm chùm"""
     
     selected_codes: set = field(default_factory=set)
     selected_courses: List[RecommendedCourse] = field(default_factory=list)
     credit: int = 0
     priority_score: float = 0.0
     
-    # Quota tracking
+    # Theo dõi hạn ngạch
     elective_counts: Dict[str, int] = field(default_factory=lambda: {
         'general': 0,
         'physical': 0,
@@ -83,5 +83,5 @@ class BeamSearchState:
         'specialization': 0,
     })
     
-    # Tiebreaker
+    # Chỉ số phá hòa
     tie_break_random: float = 0.0
