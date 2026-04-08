@@ -1,5 +1,5 @@
 """
-Routes for Recommendation engine
+Routes cho hệ thống gợi ý kế hoạch học tập
 """
 
 from flask import Blueprint, request, jsonify, current_app
@@ -16,15 +16,15 @@ def get_recommendation():
     Request:
     {
         "student_id": "SV0016",
-        "custom_data": { ... }  # Optional
+        "custom_data": { ... }  # Tùy chọn
     }
     """
     try:
-        # Check if engine is initialized
+        # Kiểm tra hệ thống gợi ý đã sẵn sàng chưa
         if current_app.recommendation_engine is None:
             return jsonify({
                 'success': False,
-                'error': 'Recommendation engine not initialized. Please check ontology file path.',
+                'error': 'Hệ thống gợi ý chưa sẵn sàng. Vui lòng kiểm tra đường dẫn file ontology.',
             }), 500
         
         data = request.get_json()
@@ -36,7 +36,7 @@ def get_recommendation():
                 'error': 'student_id không được trống',
             }), 400
         
-        # Get student profile
+        # Lấy hồ sơ sinh viên
         student_service = current_app.student_data_service
         student = student_service.get_student(student_id)
         
@@ -46,7 +46,7 @@ def get_recommendation():
                 'error': f'Không tìm thấy sinh viên {student_id}',
             }), 404
         
-        # Validate student data
+        # Kiểm tra dữ liệu sinh viên hợp lệ
         errors = student.validate()
         if errors:
             return jsonify({
@@ -55,11 +55,11 @@ def get_recommendation():
                 'details': errors,
             }), 400
         
-        # Call recommendation engine
+        # Gọi hệ thống gợi ý
         engine = current_app.recommendation_engine
         result = engine.get_recommendation(student)
         
-        # Generate timestamp
+        # Gắn thời gian tạo
         result.generated_at = datetime.now().isoformat()
         
         return jsonify({

@@ -397,7 +397,7 @@ async function populateNextStudentId() {
         return;
     }
 
-    // Default: keep as view-only
+    // Mặc định: chỉ cho xem (không cho sửa)
     studentIdInput.readOnly = true;
     studentIdInput.setAttribute('aria-readonly', 'true');
 
@@ -416,7 +416,7 @@ async function populateNextStudentId() {
 
         studentIdInput.value = String(nextId).trim().toUpperCase();
     } catch (error) {
-        // Fallback: compute from current students list
+        // Dự phòng: tính từ danh sách sinh viên hiện có
         try {
             const resp = await fetch('/api/students');
             const data = await resp.json();
